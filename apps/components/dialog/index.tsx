@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { Dialog, Portal,  useTheme, MD3Theme, Title, Divider } from 'react-native-paper';
+import { Dialog, Portal, Text, useTheme, MD3Theme, Title, Button, Paragraph, Divider } from 'react-native-paper';
 import ButtonCustom from '../button';
 
 interface DialogComponentProps {
@@ -9,6 +9,7 @@ interface DialogComponentProps {
     onPress?: () => void;
     onCancel?: () => void;
     title: string;
+    contentText?: string;
     children?: React.ReactNode;
 }
 const DialogComponent = ({
@@ -16,10 +17,12 @@ const DialogComponent = ({
     onDismiss,
     onPress,
     onCancel,
+    contentText,
     children,
     title
 }: DialogComponentProps) => {
     const theme = useTheme();
+    const styles = useStyles(theme);
     return (
         <Portal>
             <Dialog visible={visible} onDismiss={onDismiss} style={{
@@ -32,7 +35,7 @@ const DialogComponent = ({
                 </Dialog.Title>
                 <Divider style={{ borderWidth: 0.2, opacity: 0.5, marginBottom: 10 }} />
                 <Dialog.Content style={{
-                    alignSelf: "stretch",
+                    alignSelf:"stretch",
                 }}>
                     {children}
                 </Dialog.Content>
