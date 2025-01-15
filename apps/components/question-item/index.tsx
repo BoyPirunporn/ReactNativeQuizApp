@@ -3,7 +3,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
     Card,
     RadioButton,
@@ -30,8 +30,8 @@ const QuestionItem = ({
 
     const theme = useTheme();
     function renderRadio() {
-        return chooses.map((v, i) => (
-            <View key={i} style={{ flexDirection: 'row', alignItems: 'center', width: "100%", height: 50 }}>
+        return chooses.map((v, index) => (
+            <View key={index} style={{ flexDirection: 'row', alignItems: 'center', width: "100%", height: 50 }}>
                 <TouchableOpacity
                     style={[{ flexDirection: 'row' }]}
                     onPress={() => { }}>

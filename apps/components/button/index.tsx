@@ -1,8 +1,7 @@
 import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import React from 'react';
 import { MD3Theme, useTheme } from 'react-native-paper';
-import {LinearGradient} from 'expo-linear-gradient';
-import ButtonCustom from '@/apps/components/button';
+import { LinearGradient } from 'expo-linear-gradient';
 interface ButtonProps {
     label: string;
     onPress?: () => void;
@@ -21,7 +20,7 @@ const Button = ({
     const theme = useTheme();
     const styles = useStyles(theme);
     return (
-        <TouchableOpacity onPress={onPress} style={{alignSelf:"stretch"}}>
+        <TouchableOpacity onPress={onPress} style={{ alignSelf: "stretch" }}>
             {linear
                 ? <LinearGradient
                     colors={linearColor}

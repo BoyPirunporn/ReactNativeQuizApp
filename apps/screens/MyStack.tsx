@@ -8,8 +8,6 @@ import React from 'react';
 import { useTheme } from 'react-native-paper';
 import BoardScreen from './board/BoardScreen';
 import ResultScreen from './result/ResultScreen';
-import { View, Text } from 'react-native';
-import AuthProvider from '@/providers/authProvider';
 import LoginScreen from './auth/login/LoginScreen';
 import SignUpScreen from './auth/regis/SignUpScreen';
 export type RootStackProps = {
@@ -24,50 +22,56 @@ export type RootStackProps = {
 export type PropsNavieStack = NativeStackScreenProps<RootStackProps>;
 const Stack = createStackNavigator<RootStackProps>();
 
-const MyStack = ({ }) => {
+const MyStack = () => {
     const theme = useTheme();
+    const defaultScreenOptions = {
+        headerBackTitleVisible: false,
+        headerTintColor: theme.colors.primary,
+        headerStyle: {
+            backgroundColor: theme.colors.inversePrimary,
+        },
+    };
     return (
-            <NavigationContainer>
-                <Stack.Navigator initialRouteName='Home' screenOptions={{
+        <NavigationContainer>
+            <Stack.Navigator
+                initialRouteName="Home"
+                screenOptions={{
                     animationEnabled: false,
                     gestureEnabled: true,
-                }}>
-                    <Stack.Screen name='Home' component={HomeScreen} options={{
-                        headerShown: false
-                    }} />
-                    <Stack.Screen name='Question' component={QuestionScreen} options={{
-                        title: 'Questions',
-                        headerBackTitleVisible: false, // Hide back button text
-                        headerTintColor: theme.colors.primary, // Back button color
-                        headerStyle: {
-                            backgroundColor: theme.colors.inversePrimary, // Header background color
-                        },
-                    }} />
-                    <Stack.Screen name='Board' component={BoardScreen} options={{
+                    ...defaultScreenOptions,
+                }}
+            >
+                <Stack.Screen
+                    name="Home"
+                    component={HomeScreen}
+                    options={{ headerShown: false }}
+                />
+                <Stack.Screen
+                    name="Question"
+                    component={QuestionScreen}
+                    options={{ title: 'Questions' }}
+                />
+                <Stack.Screen
+                    name="Board"
+                    component={BoardScreen}
+                    options={{
                         title: 'Scoreboard',
                         headerLeft: () => null,
-                        headerBackTitleVisible: false, // Hide back button text
-                        headerTintColor: theme.colors.primary, // Back button color
-                        headerStyle: {
-                            backgroundColor: theme.colors.inversePrimary, // Header background color
-                        },
-                    }} />
-                    <Stack.Screen name='Result' component={ResultScreen} options={{
+                    }}
+                />
+                <Stack.Screen
+                    name="Result"
+                    component={ResultScreen}
+                    options={{
                         title: 'Finish',
                         headerLeft: () => null,
                         headerShown: false,
-                        headerBackTitleVisible: false, // Hide back button text
-                        headerTintColor: theme.colors.primary, // Back button color
-                        headerStyle: {
-                            backgroundColor: theme.colors.inversePrimary, // Header background color
-                        },
-                    }} />
-                    <Stack.Screen name='Login' component={LoginScreen}>
-                    </Stack.Screen>
-                    <Stack.Screen name='Signup' component={SignUpScreen}>
-                    </Stack.Screen>
-                </Stack.Navigator>
-            </NavigationContainer>
+                    }}
+                />
+                <Stack.Screen name="Login" component={LoginScreen} />
+                <Stack.Screen name="Signup" component={SignUpScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
     );
 
 
