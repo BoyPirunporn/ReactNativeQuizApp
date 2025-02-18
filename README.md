@@ -2,12 +2,11 @@
 
 A simple trivia game where players answer multiple-choice questions and keep track of their scores on the scoreboard.
 
-## Features
+## 🚀 Features
 
 - ❓ **Multiple Choice Questions**: Players answer questions with 4 choices.
 - 🏆 **Scoreboard**: Displays the score of each player during the game.
 - 👤 **Player Name**: Players input their name before starting the game to personalize the experience.
-
 
 
 ### 📸 Preview
@@ -42,11 +41,11 @@ A simple trivia game where players answer multiple-choice questions and keep tra
 
 Feel free to contribute! Fork the repository, make your changes, and submit a pull request. 😊
 
-### 📄 License
+<!-- ### 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. -->
 
-
+<!-- 
 
 # เกมตอบคำถาม
 
@@ -77,4 +76,4 @@ This project is licensed under the MIT License.
 
 ## การสนับสนุนและการพัฒนาต่อ
 
-สามารถ fork repository และสร้าง pull request เพื่อเพิ่มฟีเจอร์หรือแก้ไขข้อผิดพลาดได้
+สามารถ fork repository และสร้าง pull request เพื่อเพิ่มฟีเจอร์หรือแก้ไขข้อผิดพลาดได้ -->
