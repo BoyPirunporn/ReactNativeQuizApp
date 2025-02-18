@@ -16,8 +16,8 @@ A simple trivia game where players answer multiple-choice questions and keep tra
 
 ### 🛠️ Technologies Used
 
-- **Frontend:** React Native
-- **Database:** Firebase Firestore
+- **Frontend:** 📱 React Native
+- **Database:** 🔥 Firebase Firestore
 
 ### 🔧 Installation
 
