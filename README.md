@@ -1,3 +1,52 @@
+## 📝 QuizApp
+
+A simple trivia game where players answer multiple-choice questions and keep track of their scores on the scoreboard.
+
+## Features
+
+- **Multiple Choice Questions**: Players answer questions with 4 choices.
+- **Scoreboard**: Displays the score of each player during the game.
+- **Player Name**: Players input their name before starting the game to personalize the experience.
+
+
+### 📸 Preview
+
+
+
+### 🛠️ Technologies Used
+
+- **Frontend:** React Native
+- **Database:** Firebase Firestore
+
+### 🔧 Installation
+
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/your-username/restaurant-finder.git  
+   ```
+2. Navigate to the project folder:
+   ```sh
+   cd ReactNativeQuizApp  
+   ```
+3. Install dependencies:
+   ```sh
+   npm install  
+   ```
+4. Start the development server:
+   ```sh
+   npm run dev  
+   ```
+
+### 📌 Contribution
+
+Feel free to contribute! Fork the repository, make your changes, and submit a pull request. 😊
+
+### 📄 License
+
+This project is licensed under the MIT License.
+
+
+
 # เกมตอบคำถาม
 
 ## คุณสมบัติ
