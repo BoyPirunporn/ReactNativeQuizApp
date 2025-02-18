@@ -4,9 +4,10 @@ A simple trivia game where players answer multiple-choice questions and keep tra
 
 ## Features
 
-- **Multiple Choice Questions**: Players answer questions with 4 choices.
-- **Scoreboard**: Displays the score of each player during the game.
-- **Player Name**: Players input their name before starting the game to personalize the experience.
+- ❓ **Multiple Choice Questions**: Players answer questions with 4 choices.
+- 🏆 **Scoreboard**: Displays the score of each player during the game.
+- 👤 **Player Name**: Players input their name before starting the game to personalize the experience.
+
 
 
 ### 📸 Preview
