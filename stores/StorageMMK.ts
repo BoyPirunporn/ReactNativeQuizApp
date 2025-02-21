@@ -1,11 +1,8 @@
-import App from '@/App';
-import { AppRegistry } from 'react-native';
 import { MMKV } from 'react-native-mmkv';
 import { StateStorage } from 'zustand/middleware';
-import {expo} from '../app.json';
 
 export const storage = new MMKV({
-    id: "boards-store"
+    id: "user-info"
 });
 
 export const zustandStorage: StateStorage = {
@@ -14,6 +11,5 @@ export const zustandStorage: StateStorage = {
     removeItem: (name: string) => storage.delete(name)
 };
 
-AppRegistry.registerComponent(expo.name, () => App);
 
 export default storage;

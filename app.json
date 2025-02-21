@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "questionandanswer",
-    "slug": "question-interview",
+    "name": "QuizApp",
+    "slug": "quzi-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.prpasn.question-interview"
+      "bundleIdentifier": "com.prpasn.quzi-app"
     },
     "android": {
       "adaptiveIcon": {
@@ -24,11 +24,8 @@
         "backgroundColor": "#76FD98"
       },
       "package": "com.myquestion",
-      "googleServicesFile":"./google-services.json"
+      "googleServicesFile": "./google-services.json"
     },
-    "plugins":[
-      "@react-native-firebase/app"
-    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },

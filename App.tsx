@@ -9,11 +9,11 @@ import SnackBarProvider from './apps/providers/snackbarProvider';
 export default function App() {
   return (
     <PaperProvider theme={theme}>
-      <Main />
-      <DialogProvider />
-      <LoadingProvider />
-      <SnackBarProvider />
-    </PaperProvider>
+        <Main />
+        <DialogProvider />
+        <LoadingProvider />
+        <SnackBarProvider />
+      </PaperProvider>
   );
 }
 

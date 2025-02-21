@@ -4,7 +4,7 @@ import {
   View,
   Text,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '@/apps/components/button';
 import { TextInput, useTheme } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -21,14 +21,23 @@ import One from '../../../assets/medal-gold-winner-2.svg'
 import Two from '../../../assets/2nd-place-medal.svg'
 import Three from '../../../assets/3rd-place-medal.svg'
 import * as svg from 'react-native-svg';
+import useStoreLoading from '@/stores/useStoreLoading';
+
 const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
   const [testerName, setTesterName] = useState<string>();
   const [error, setError] = useState<string | null>();
   const styles = useStyles();
   const theme = useTheme();
   const storeBoard = useStoreBoard();
-  const storageDialog = useStoreDialogBoard();
-  const storageQuestion = useStoreQuestion();
+  const storeDialog = useStoreDialogBoard();
+  const storeQuestion = useStoreQuestion();
+
+  useEffect(() => {
+    storeBoard.fetchBoard();
+  }, [storeBoard.fetchBoard])
+  if (useStoreLoading().loading) {
+    return null;
+  }
   return (
     <SafeAreaView>
       <View style={[styles.container]}>
@@ -57,7 +66,6 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
                     height: index !== 1 ? 110 : 130,
                     alignItems: "center",
                     justifyContent: "center",
-
                     display: "flex",
                   }} >
                     <svg.Svg width={index !== 1 ? 60 : 80} height={index !== 1 ? 60 : 80} style={{
@@ -120,8 +128,8 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
             ? (
               <FlatList
                 style={styles.flatListStyle}
-                data={storeBoard.boards}
-                renderItem={(d) => renderItemlist(d.index, d.item)}
+                data={storeBoard.boards.slice(3)}
+                renderItem={(d) => renderItemlist(d.index + 3, d.item)}
                 keyExtractor={(item) => item.id.toString()}
               />
             )
@@ -142,24 +150,24 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
             label="Start Quiz"
             style={{ alignSelf: "stretch" }}
             onPress={() => {
-              storageDialog.onOpen();
+              storeDialog.onOpen();
             }}
           />
         </View>
       </View>
       <DialogComponent
-        visible={storageDialog.visible}
-        onDismiss={storageDialog.onClose}
+        visible={storeDialog.visible}
+        onDismiss={storeDialog.onClose}
         title={'Player name'}
-        onCancel={storageDialog.onClose}
+        onCancel={storeDialog.onClose}
         onPress={async () => {
           if (!testerName?.length) {
             setError("Please enter your name!");
             return;
           }
           setError(null);
-          storageDialog.onClose();
-          storageQuestion.setPlayerName(testerName!);
+          storeDialog.onClose();
+          storeQuestion.setPlayerName(testerName!);
           props.navigation.navigate("Question");
         }}
       >
@@ -217,7 +225,7 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
             </View>
             <Text style={styles.titleStyle}>{item.playerName}</Text>
           </View>
-          <Text style={styles.listStyleDescription}>{item.score} / {storageQuestion.totalQuestion}</Text>
+          <Text style={styles.listStyleDescription}>{item.score} / {storeQuestion.totalQuestion}</Text>
         </View>
       </View>
 
@@ -226,22 +234,7 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
 };
 
 
-const sort = (boards: IBoard[]) => {
-  let itemSort = [];
-  for (let i = 0; i < boards.length; i++) {
-    let max = -Infinity;
-    let maxIndex = -1;
-    for (let j = 0; j < boards.length; j++) {
-      if (boards[j].score > max) {
-        max = boards[j].score;
-        maxIndex = j;
-      }
-    }
-    itemSort.push(boards[maxIndex]);
-    boards.splice(maxIndex, 1);
-  }
-  return itemSort
-}
+
 export default BoardScreen;
 
 const useStyles = () => StyleSheet.create({

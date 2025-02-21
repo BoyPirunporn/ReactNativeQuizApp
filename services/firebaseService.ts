@@ -15,7 +15,6 @@ import {
     query,
     where,
     WhereFilterOp,
-    QueryFieldFilterConstraint,
     Query,
 } from "firebase/firestore";
 

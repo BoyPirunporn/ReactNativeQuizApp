@@ -11,12 +11,14 @@ interface StoreBoard {
     setBoard: (board: MasterBoard) => void;
     remove: (id: string) => Promise<void>;
     fetchBoard: () => Promise<void>;
+    topTree: IBoard[];
 }
 
 
 const useStoreBoard = create<StoreBoard>()
     ((set, get) => ({
         boards: [],
+        topTree: [],
         setBoard: async (board: MasterBoard) => {
             const query = storage.queryWhere<MasterBoard>("boards", "playerName", "==", board.playerName);
             const id = await storage.getByPlayerName(query);
@@ -40,8 +42,8 @@ const useStoreBoard = create<StoreBoard>()
             useStoreLoading.getState().setLoading();
             try {
                 const boards = await storage.get<IBoard>("boards");
-                const mapBoard: IBoard[] = boards.docs.map(c => ({ ...c.data(), id: c.id }));
-                set({ boards: mapBoard });
+                const mapBoard: IBoard[] = boards.docs.sort((a, b) => a.data().score - b.data().score).map(c => ({ ...c.data(), id: c.id }));
+                set({ boards: rankAndRearrange(mapBoard) });
             } catch (error) {
                 console.log(error);
             } finally {
@@ -51,6 +53,12 @@ const useStoreBoard = create<StoreBoard>()
     }),
     );
 
+
+const rankAndRearrange = (data: IBoard[]) => {
+    const sorted = [...data].sort((a, b) => b.score - a.score);
+    if (sorted.length < 3) return sorted;
+    return [sorted[1], sorted[0], sorted[2], ...sorted.slice(3)];
+}
 
 
 export default useStoreBoard;

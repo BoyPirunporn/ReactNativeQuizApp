@@ -3,12 +3,20 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
+      "@firebase/auth": [
+        "./node_modules/@firebase/auth/dist/index.rn.d.ts"
+      ],
       "@/*": [
         "./*"
+      ],
+      "tailwind.config": [
+        "./tailwind.config.js"
       ]
     }
   },
-  "files":["globals.d.ts"],
+  "files": [
+    "globals.d.ts"
+  ],
   "include": [
     "**/*.ts",
     "**/*.tsx",

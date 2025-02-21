@@ -1,4 +1,4 @@
-rootProject.name = 'questionandanswer'
+rootProject.name = 'QuizApp'
 
 dependencyResolutionManagement {
   versionCatalogs {
