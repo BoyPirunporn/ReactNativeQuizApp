@@ -15,26 +15,27 @@ import DialogComponent from '@/apps/components/dialog';
 import useStoreQuestion from '@/stores/useStoreQuestion';
 import useStoreDialogBoard from '@/stores/useStoreDialogBoard';
 import { theme } from '@/apps/config/theme';
-import FaceSkin from '../../../assets/child-light-skin-tone.svg'
+import FaceSkin from '../../../assets/child-light-skin-tone.svg';
 import Crown from '../../../assets/crown.svg';
-import One from '../../../assets/medal-gold-winner-2.svg'
-import Two from '../../../assets/2nd-place-medal.svg'
-import Three from '../../../assets/3rd-place-medal.svg'
+import One from '../../../assets/medal-gold-winner-2.svg';
+import Two from '../../../assets/2nd-place-medal.svg';
+import Three from '../../../assets/3rd-place-medal.svg';
 import * as svg from 'react-native-svg';
 import useStoreLoading from '@/stores/useStoreLoading';
+import useStoreAuth from '@/stores/useStoreAuth';
 
 const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
-  const [testerName, setTesterName] = useState<string>();
   const [error, setError] = useState<string | null>();
   const styles = useStyles();
   const theme = useTheme();
+  const { playerName } = useStoreAuth();
   const storeBoard = useStoreBoard();
   const storeDialog = useStoreDialogBoard();
   const storeQuestion = useStoreQuestion();
 
   useEffect(() => {
     storeBoard.fetchBoard();
-  }, [storeBoard.fetchBoard])
+  }, [storeBoard.fetchBoard]);
   if (useStoreLoading().loading) {
     return null;
   }
@@ -161,28 +162,23 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
         title={'Player name'}
         onCancel={storeDialog.onClose}
         onPress={async () => {
-          if (!testerName?.length) {
-            setError("Please enter your name!");
-            return;
-          }
-          setError(null);
+          // if (!testerName?.length) {
+          //   setError("Please enter your name!");
+          //   return;
+          // }
+          // setError(null);
           storeDialog.onClose();
-          storeQuestion.setPlayerName(testerName!);
+          storeQuestion.setPlayerName(playerName!);
           props.navigation.navigate("Question");
         }}
       >
         <TextInput
           label="Name"
-          value={testerName}
+          value={playerName ?? ""}
           mode="outlined"
           error={!!error}
-          onChangeText={text => {
-            setTesterName(text);
-          }}
+          readOnly
         />
-        {error && <Text style={{
-          color: theme.colors.error
-        }}>{error}</Text>}
       </DialogComponent>
     </SafeAreaView >
   );

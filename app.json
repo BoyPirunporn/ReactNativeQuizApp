@@ -16,7 +16,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.prpasn.quzi-app"
+      "bundleIdentifier": "com.prpasn.quiz.app"
     },
     "android": {
       "adaptiveIcon": {

@@ -13,6 +13,9 @@ import Login from './auth/LoginScreen';
 import Register from './auth/RegisterScreen';
 import { useEffect } from 'react';
 import useStoreAuth from '@/stores/useStoreAuth';
+import { View, Text } from 'react-native';
+
+// import IonicIcons from 'react-native-vector-icons/Ionicons';
 export type RootStackProps = {
     Home: undefined,
     Question: undefined;
@@ -24,7 +27,13 @@ export type RootStackProps = {
 
 export type PropsNavieStack = NativeStackScreenProps<RootStackProps>;
 const Stack = createStackNavigator();
-
+const headerRight = () => (
+    <View style={{ marginRight: 10 }}>
+        {/* <IonicIcons name="log-out-outline" size={30} style={{
+            color: "red"
+        }} /> */}
+    </View>
+);
 
 const AppNavigator = () => {
     const theme = useTheme();
@@ -35,7 +44,7 @@ const AppNavigator = () => {
 
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName="Login" >
+            <Stack.Navigator initialRouteName="Home" >
                 {/* Get Started เป็นหน้าแรก */}
                 <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
                 {user ? (
@@ -77,13 +86,20 @@ const AppNavigator = () => {
                             headerStyle: { backgroundColor: theme.colors.inversePrimary },
                             headerLeft: () => null // 🔥 ซ่อนปุ่ม back
                         }} />
-                        <Stack.Screen name="Register" component={Register} />
+                        <Stack.Screen name="Register" component={Register}
+                            options={{
+                                title: '',
+                                headerBackTitleVisible: false,
+                                headerTintColor: theme.colors.primary,
+                                headerStyle: { backgroundColor: theme.colors.inversePrimary },
+                                headerLeft: () => null // 🔥 ซ่อนปุ่ม back
+                            }} />
                     </Stack.Group>
                 )}
             </Stack.Navigator>
         </NavigationContainer>
-    )
-}
+    );
+};
 
 
 

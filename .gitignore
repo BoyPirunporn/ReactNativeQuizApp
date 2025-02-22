@@ -73,4 +73,5 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 google-services.json
+config/firebaseConfig.ts
 # @end expo-cli

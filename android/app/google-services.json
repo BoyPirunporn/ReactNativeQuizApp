@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "313337670885",
-    "project_id": "qanda-9cdcc",
-    "storage_bucket": "qanda-9cdcc.firebasestorage.app"
+    "project_number": "582682881442",
+    "project_id": "questionandasnwer",
+    "storage_bucket": "questionandasnwer.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:313337670885:android:93fc7add92d257e03f380c",
+        "mobilesdk_app_id": "1:582682881442:android:6ff36dc36602bd5f7dd6fb",
         "android_client_info": {
           "package_name": "com.myquestion"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCv1tBGcHd8s6lbCLSuwFaFgJoX6mkBWSE"
+          "current_key": "AIzaSyC-QLh4VAbXS2UsW3dVbPS8kppYSYWRGeo"
         }
       ],
       "services": {

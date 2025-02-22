@@ -48,7 +48,7 @@ const DialogComponent = ({
                         alignContent: "flex-end",
                         gap: 5
                     }}>
-                        <ButtonCustom
+                        {/* <ButtonCustom
                             linear={false}
                             style={{
                                 backgroundColor: theme.colors.error,
@@ -58,13 +58,13 @@ const DialogComponent = ({
                             onPress={() => {
                                 onCancel?.();
                                 onDismiss();
-                            }} label={'Cancel'} />
+                            }} label={'Cancel'} /> */}
                         <ButtonCustom
                             style={{
                                 height: 45,
                                 width: 80
                             }}
-                            onPress={onPress} label={"Submit"} />
+                            onPress={onPress} label={"Enter"} />
                     </View>
                 </Dialog.Actions>
             </Dialog>

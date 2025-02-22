@@ -3,12 +3,13 @@ import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage'
 import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
-  apiKey: "AIzaSyALUpMG1yNhNIrVGoeiseXbycdMXMw7qYQ",
-  authDomain: "qanda-9cdcc.firebaseapp.com",
-  projectId: "qanda-9cdcc",
-  storageBucket: "qanda-9cdcc.firebasestorage.app",
-  messagingSenderId: "313337670885",
-  appId: "1:313337670885:web:09db1e8c10dae9663f380c"
+  apiKey: "AIzaSyA6ya9OmRZTZOCvKvJsw7t7uoeJf-oJtnw",
+  authDomain: "questionandasnwer.firebaseapp.com",
+  projectId: "questionandasnwer",
+  storageBucket: "questionandasnwer.appspot.com",
+  messagingSenderId: "582682881442",
+  appId: "1:582682881442:web:988bb2732b79e1ec7dd6fb",
+  measurementId: "G-1CYGGF6XWF"
 };
 
 export const app = initializeApp(firebaseConfig);

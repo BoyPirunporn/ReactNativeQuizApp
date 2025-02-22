@@ -1,9 +1,10 @@
-import {  auth, storageFirebase } from "@/config/firebaseConfig";
+import { auth, storageFirebase } from "@/config/firebaseConfig";
 import { FirebaseService } from "@/services/firebaseService";
-import {  createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth'
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { zustandStorage } from "./StorageMMK";
+// import { zustandStorage } from "./StorageMMK";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface IAuth {
     playerName: string | null,
@@ -20,7 +21,7 @@ interface IAuth {
 
 const useStoreAuth = create<IAuth>()(
     persist(
-        set => ({
+        (set, get) => ({
             playerName: null,
             setPlayer: async (playerName: string) => {
                 const storage = new FirebaseService(storageFirebase);
@@ -45,33 +46,32 @@ const useStoreAuth = create<IAuth>()(
             },
             register: async (email: string, password: string, confirmPassword: string) => {
                 try {
-                    if (password !== confirmPassword) throw new Error("Password is not match");
-                    await createUserWithEmailAndPassword(auth,email, password);
+                    await createUserWithEmailAndPassword(auth, email, password);
                 } catch (error) {
-                    console.log(error)
+                    console.log(error);
                 }
             },
             logout: async () => {
                 try {
                     await signOut(auth);
-                    set({ user: null })
+                    set({ user: null });
                 } catch (error) {
-                    console.log(error)
+                    console.log(error);
                 }
             },
             listenToAuthChanges: () => {
                 onAuthStateChanged(auth,
                     (user => {
-                        console.log({user})
-                        set({ user: user, loading: false });
-        
+                        console.log({ user });
+                        set({ user: user, loading: false, playerName: user?.email!.split("@")[0] });
+
                     })
-                )
+                );
             }
         }),
         {
-            name:"user-info",
-            storage: createJSONStorage(() => zustandStorage)
+            name: "user-info",
+            storage: createJSONStorage(() => AsyncStorage)
         }
     )
 );

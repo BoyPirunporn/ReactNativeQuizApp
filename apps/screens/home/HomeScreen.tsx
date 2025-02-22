@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import Button from '../../components/button';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -7,6 +7,9 @@ import useStoreAuth from '@/stores/useStoreAuth';
 
 const HomeScreen = (props: NativeStackScreenProps<RootStackProps>) => {
     const { user } = useStoreAuth();
+    // useEffect(() => {
+    //     if (user) return props.navigation.navigate("Board");
+    // }, []);
     return (
         <View style={useStyles.container}>
             <View style={useStyles.imageContainer}>
@@ -21,7 +24,7 @@ const HomeScreen = (props: NativeStackScreenProps<RootStackProps>) => {
                     style={{ alignSelf: "stretch" }}
                     onPress={() => {
                         if (!user) {
-                            return props.navigation.navigate("Login")
+                            return props.navigation.navigate("Login");
                         }
                         props.navigation.navigate("Board");
                     }}
