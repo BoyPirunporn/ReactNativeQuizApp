@@ -7,8 +7,8 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface IAuth {
-    playerName: string | null,
-    setPlayer: (playerName: string) => Promise<void>;
+    // playerName: string | null,
+    // setPlayer: (playerName: string) => Promise<void>;
     loading: boolean;
     user: User | null;
     setUser: (user: any) => void;
@@ -17,21 +17,22 @@ interface IAuth {
     register: (email: string, password: string, confirmPassword: string) => Promise<void>;
     logout: () => Promise<void>;
     listenToAuthChanges: () => void;
+    getPlayer:() => string
 }
 
 const useStoreAuth = create<IAuth>()(
     persist(
         (set, get) => ({
-            playerName: null,
-            setPlayer: async (playerName: string) => {
-                const storage = new FirebaseService(storageFirebase);
-                const pId = await storage.save<{ playerName: string; }>({
-                    name: "players"
-                }, {
-                    playerName
-                });
-                set({ playerName: pId });
-            },
+            // playerName: null,
+            // setPlayer: async (playerName: string) => {
+            //     const storage = new FirebaseService(storageFirebase);
+            //     const pId = await storage.save<{ playerName: string; }>({
+            //         name: "players"
+            //     }, {
+            //         playerName
+            //     });
+            //     set({ playerName: pId });
+            // },
             user: null,
             loading: false,
             setUser: (user) => set({ user }),
@@ -44,6 +45,7 @@ const useStoreAuth = create<IAuth>()(
                     console.log(error);
                 }
             },
+            getPlayer:() => get().user?.email?.split("@").at(0)!,
             register: async (email: string, password: string, confirmPassword: string) => {
                 try {
                     await createUserWithEmailAndPassword(auth, email, password);
@@ -62,9 +64,7 @@ const useStoreAuth = create<IAuth>()(
             listenToAuthChanges: () => {
                 onAuthStateChanged(auth,
                     (user => {
-                        console.log({ user });
-                        set({ user: user, loading: false, playerName: user?.email!.split("@")[0] });
-
+                        set({ user: user, loading: false });
                     })
                 );
             }

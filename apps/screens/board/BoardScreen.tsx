@@ -15,20 +15,16 @@ import DialogComponent from '@/apps/components/dialog';
 import useStoreQuestion from '@/stores/useStoreQuestion';
 import useStoreDialogBoard from '@/stores/useStoreDialogBoard';
 import { theme } from '@/apps/config/theme';
-import FaceSkin from '../../../assets/child-light-skin-tone.svg';
-import Crown from '../../../assets/crown.svg';
-import One from '../../../assets/medal-gold-winner-2.svg';
-import Two from '../../../assets/2nd-place-medal.svg';
-import Three from '../../../assets/3rd-place-medal.svg';
-import * as svg from 'react-native-svg';
 import useStoreLoading from '@/stores/useStoreLoading';
 import useStoreAuth from '@/stores/useStoreAuth';
+import ItemList from './components/ItemList';
+import TopTreeRank from './components/TopTreeRank';
 
 const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
   const [error, setError] = useState<string | null>();
   const styles = useStyles();
   const theme = useTheme();
-  const { playerName } = useStoreAuth();
+  const { getPlayer } = useStoreAuth();
   const storeBoard = useStoreBoard();
   const storeDialog = useStoreDialogBoard();
   const storeQuestion = useStoreQuestion();
@@ -43,85 +39,8 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
     <SafeAreaView>
       <View style={[styles.container]}>
         <View style={styles.topThree}>
-          {storeBoard.boards.length ? (
-            <View style={{
-              padding: 10,
-              width: "100%",
-              display: 'flex',
-              flexDirection: "row",
-              justifyContent: 'space-between',
-              gap: 10,
-              margin: 8,
-            }}>
-              {storeBoard.boards.slice(0, 3).map((item, index) => (
-                <View key={item.id} style={{
-                  flex: 1,
-                  marginTop: index !== 1 ? 30 : 0,
-                  alignItems: "center",
-                  gap: 10
-                }}>
-                  <View style={{
-                    position: "relative",
-                    borderRadius: 100,
-                    width: index !== 1 ? 110 : 130,
-                    height: index !== 1 ? 110 : 130,
-                    alignItems: "center",
-                    justifyContent: "center",
-                    display: "flex",
-                  }} >
-                    <svg.Svg width={index !== 1 ? 60 : 80} height={index !== 1 ? 60 : 80} style={{
-                      position: "relative"
-                    }}>
-                      <FaceSkin />
-                    </svg.Svg>
-                    <svg.Svg width={80} height={70} style={{
-                      position: "absolute",
-                      left: 25,
-                      top: -10,
-                      display: index !== 1 ? "none" : "flex"
-                    }}>
-                      <Crown />
-                    </svg.Svg>
-                    <svg.Svg width={80} height={70} style={{
-                      position: "absolute",
-                      left: 25,
-                      top: 95,
-                      display: index !== 1 ? "none" : "flex"
-                    }}>
-                      <One />
-                    </svg.Svg>
-                    <svg.Svg width={50} height={40} style={{
-                      position: "absolute",
-                      left: 30,
-                      top: 82,
-                      display: index !== 0 ? "none" : "flex"
-                    }}>
-                      <Two />
-                    </svg.Svg>
-                    <svg.Svg width={50} height={40} style={{
-                      position: "absolute",
-                      left: 30,
-                      top: 82,
-                      display: index !== 2 ? "none" : "flex"
-                    }}>
-                      <Three />
-                    </svg.Svg>
-                  </View>
-                  <Text style={{
-                    marginTop: 20,
-                    fontWeight: "600",
-                    fontSize: 20,
-                    textAlign: "center",
-                  }}>{item.playerName}</Text>
-                  <Text
-                    style={{
-                      fontWeight: "400",
-                      fontSize: 18,
-                      textAlign: "center",
-                    }}>{item.score}</Text>
-                </View>
-              ))}
-            </View>
+          {storeBoard.topTree ? (
+            <TopTreeRank boards={storeBoard.boards.slice(0, 3)} />
           ) : null}
         </View>
         <View style={styles.listBoard}>
@@ -130,9 +49,15 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
               <FlatList
                 style={styles.flatListStyle}
                 data={storeBoard.boards.slice(3)}
-                renderItem={(d) => renderItemlist(d.index + 3, d.item)}
-                keyExtractor={(item) => item.id.toString()}
-              />
+                renderItem={(d) => (
+                  <ItemList
+                    rank={d.index + 1}
+                    playerName={d.item.playerName}
+                    score={d.item.score}
+                    totalQuestion={storeQuestion.totalQuestion}
+                  />
+                )}
+                keyExtractor={(item) => item.id.toString()} />
             )
             : (
               <View style={{
@@ -141,7 +66,7 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
                 <Text style={{
                   fontSize: 30,
                   fontWeight: "500",
-                  color: theme.colors.onPrimary
+                  color: theme.colors.inversePrimary
                 }}>No board score!</Text>
               </View>
             )}
@@ -151,22 +76,18 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
             label="Start Quiz"
             style={{ alignSelf: "stretch" }}
             onPress={() => {
-              storeDialog.onOpen();
+              storeQuestion.setPlayerName(getPlayer());
+              props.navigation.navigate("Question");
             }}
           />
         </View>
       </View>
-      <DialogComponent
+      {/* <DialogComponent
         visible={storeDialog.visible}
         onDismiss={storeDialog.onClose}
         title={'Player name'}
         onCancel={storeDialog.onClose}
         onPress={async () => {
-          // if (!testerName?.length) {
-          //   setError("Please enter your name!");
-          //   return;
-          // }
-          // setError(null);
           storeDialog.onClose();
           storeQuestion.setPlayerName(playerName!);
           props.navigation.navigate("Question");
@@ -179,54 +100,11 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
           error={!!error}
           readOnly
         />
-      </DialogComponent>
+      </DialogComponent> */}
     </SafeAreaView >
   );
 
-  function renderItemlist(index: number, item: IBoard) {
-    return (
-      <View style={{
-        padding: 8,
-        marginVertical: 5,
-        borderRadius: 30,
-        borderWidth: 1.4,
-        borderColor: theme.colors.inversePrimary
-      }}>
-        <View style={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: "row",
-          alignContent: "center",
-          alignItems: "center",
-        }}>
-          <View style={{
-            display: 'flex',
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 20,
-          }}>
-            <View style={{
-              backgroundColor: theme.colors.inversePrimary,
-              alignContent: "center",
-              alignItems: "center",
-              justifyContent: "center",
-              display: "flex",
-              borderRadius: 30,
-              width: 30,
-              height: 30,
-            }}>
-              <Text style={[styles.titleStyle, {
-                color: "#fff",
-              }]}>{index + 1}</Text>
-            </View>
-            <Text style={styles.titleStyle}>{item.playerName}</Text>
-          </View>
-          <Text style={styles.listStyleDescription}>{item.score} / {storeQuestion.totalQuestion}</Text>
-        </View>
-      </View>
 
-    );
-  };
 };
 
 
@@ -262,18 +140,12 @@ const useStyles = () => StyleSheet.create({
     marginBottom: 1,
     padding: 15
   },
-  titleStyle: {
-    fontSize: 16,
-    paddingBottom: 5
-  },
-  listStyleDescription: {
-    fontSize: 20,
-    color: theme.colors.onSecondaryContainer,
-    fontWeight: "700"
-  },
   flatListStyle: {
     flex: 1,
     alignSelf: "stretch",
     paddingHorizontal: 10,
   }
 });
+
+
+

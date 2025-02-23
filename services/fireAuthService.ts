@@ -1,16 +1,41 @@
+import { auth } from "@/config/firebaseConfig";
+import {
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    User,
+    signOut as signOutFirebase,
+    onAuthStateChanged,
+} from "firebase/auth";
 
-interface IFireAuthService {
-    signIn: (email: string, password: string) => Promise<any>;
-    signUp: (email: string, password: string) => Promise<any>;
-    signOut: () => Promise<any>;
-    onAuthStateChanged: () => Promise<any>;
-}
-export default class FireAuthService implements IFireAuthService {
-    async signIn(email: string, password: string) {
+export const signIn = async (email: string, password: string): Promise<User | undefined> => {
+    try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        return userCredential.user;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const signUp = async (email: string, password: string) => {
+    try {
+        await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const signOut = async () => {
+    try {
+        await signOutFirebase(auth);
+    } catch (error) {
+        console.log(error);
+    }
+};
 
-    };
-    async signUp(email: string, password: string) { }
-    async signOut() { }
-    async onAuthStateChanged() { }
-
-}
+export const listenToAuthChanges = async (): Promise<User | null> => {
+    const user: User | null = null;
+    onAuthStateChanged(auth,
+        (user => {
+            user = user;
+        })
+    );
+    return user;
+};

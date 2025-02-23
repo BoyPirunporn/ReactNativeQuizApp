@@ -3,7 +3,7 @@ import {
     TouchableOpacity,
     View
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
     Card,
     RadioButton,
@@ -76,4 +76,3 @@ const QuestionItem = ({
 
 export default QuestionItem;
 
-const styles = StyleSheet.create({});

@@ -7,9 +7,9 @@ import useStoreAuth from '@/stores/useStoreAuth';
 
 const HomeScreen = (props: NativeStackScreenProps<RootStackProps>) => {
     const { user } = useStoreAuth();
-    // useEffect(() => {
-    //     if (user) return props.navigation.navigate("Board");
-    // }, []);
+    useEffect(() => {
+        if (user) return props.navigation.navigate("Board");
+    }, []);
     return (
         <View style={useStyles.container}>
             <View style={useStyles.imageContainer}>

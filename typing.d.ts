@@ -11,7 +11,7 @@ interface MasterBoard {
     score: number;
     playerName: string;
     answer?: IAnswer[];
-    questions?: IQuestion[]
+    questions?: IQuestion[];
 }
 interface IBoard extends MasterBoard {
     id: string;

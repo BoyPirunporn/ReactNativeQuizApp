@@ -34,7 +34,7 @@ const useStoreQuestion = create<StoreQuestion>()(
             question: [],
             asnwers: [],
             loading: false,
-            totalQuestion: 10,
+            totalQuestion: 1,
             playerName: "",
             currentQuestion: 0,
             flag: "INIT",
