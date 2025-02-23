@@ -82,7 +82,7 @@ const RegisterScreen = ({
                                     onBlur={onBlur}
                                     style={{ ...makeStyle.input, borderColor: errors.email ? "red" : theme.colors.inversePrimary }} />
                             </View>
-                            {errors.email && <Text style={{ color: "red" }}>{errors.email.message}</Text>}
+                            {errors.email && <Text style={makeStyle.textError}>{errors.email.message}</Text>}
                         </View>
                     )}
                 />
@@ -101,7 +101,7 @@ const RegisterScreen = ({
                                     secureTextEntry
                                     style={{ ...makeStyle.input, borderColor: errors.password ? "red" : theme.colors.inversePrimary }} />
                             </View>
-                            {errors.password && <Text style={{ color: "red" }}>{errors.password.message}</Text>}
+                            {errors.password && <Text style={makeStyle.textError}>{errors.password.message}</Text>}
                         </View>
                     )}
                 />
@@ -120,7 +120,7 @@ const RegisterScreen = ({
                                     secureTextEntry
                                     style={{ ...makeStyle.input, borderColor: errors.confirmPassword ? "red" : theme.colors.inversePrimary }} />
                             </View>
-                            {errors.confirmPassword && <Text style={{ color: "red" }}>{errors.confirmPassword.message}</Text>}
+                            {errors.confirmPassword && <Text style={makeStyle.textError}>{errors.confirmPassword.message}</Text>}
                         </View>
                     )}
                 />
@@ -129,7 +129,7 @@ const RegisterScreen = ({
                     <Text style={{ textDecorationLine: "underline" }}>Forgot Password?</Text>
                 </TouchableOpacity>
                 <Button
-                    label="Login"
+                    label="Sign UP"
                     style={makeStyle.button}
                     onPress={handleSubmit(onSubmit)}
                     disabled={false}
@@ -174,7 +174,7 @@ const styles = (theme: MD3Theme) => StyleSheet.create({
     controller: {
         flexDirection: "column",
         gap: 1,
-        marginBottom: 20,
+        marginBottom: 10,
     },
     inputContainer: {
         flexDirection: 'row',
@@ -183,6 +183,8 @@ const styles = (theme: MD3Theme) => StyleSheet.create({
         height: 50,
         borderRadius: 8,
     },
+
+    textError: { marginVertical: 10, color: "red" },
     input: {
         borderWidth: 1,
         borderColor: theme.colors.inversePrimary,

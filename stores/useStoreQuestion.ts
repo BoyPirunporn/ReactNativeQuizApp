@@ -68,13 +68,13 @@ const useStoreQuestion = create<StoreQuestion>()(
             }),
             setLoading: () => set({ loading: !get().loading }),
             setQuestion: async () => {
-                useStoreLoading.getState().setLoading();
+                useStoreLoading.getState().setLoading(true);
                 set({
                     asnwers: []
                 });
                 await delay(2 * 1000);
                 set({ question: randomQuestion(get().totalQuestion) });
-                useStoreLoading.getState().setLoading();
+                useStoreLoading.getState().setLoading(false);
             },
             findAnswers: (id: string) => {
                 const asnwer = get().asnwers.find(asw => asw.id === id);
@@ -93,7 +93,7 @@ const useStoreQuestion = create<StoreQuestion>()(
                 });
             },
             compare: async (): Promise<IScore> => {
-                useStoreLoading.getState().setLoading();
+                useStoreLoading.getState().setLoading(true);
                 const correct = get().asnwers.reduce((prv, cur) => prv += cur.correct === cur.asnwer ? 1 : 0, 0);
                 const incorrect = get().asnwers.reduce((prv, cur) => prv += cur.correct !== cur.asnwer ? 1 : 0, 0);
                 const score = {
@@ -111,7 +111,7 @@ const useStoreQuestion = create<StoreQuestion>()(
                     questions: get().question
                 });
                 useStoreQuestion.getState().clearQuestionState();
-                useStoreLoading.getState().setLoading();
+                useStoreLoading.getState().setLoading(false);
                 return score;
             },
             onValidate: () => {

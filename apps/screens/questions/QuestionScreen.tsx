@@ -1,14 +1,15 @@
-import { StyleSheet, View, Text } from 'react-native';
-import React, { useEffect, useState, } from 'react';
-import useStoreQuestion from '@/stores/useStoreQuestion';
-import { FlatList, RefreshControl } from 'react-native-gesture-handler';
-import { useTheme, Snackbar } from 'react-native-paper';
-import QuestionItem from '@/apps/components/question-item';
+import ButtonCustom from '@/apps/components/button';
 import FooterList from '@/apps/components/footer-list';
+import QuestionItem from '@/apps/components/question-item';
 import useStoreDialog from '@/stores/useStoreDialog';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackProps } from '../MyStack';
+import useStoreQuestion from '@/stores/useStoreQuestion';
 import { CommonActions } from '@react-navigation/native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import React, { useEffect, useState, } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native-gesture-handler';
+import { Snackbar, useTheme } from 'react-native-paper';
+import { RootStackProps } from '../MyStack';
 const QuestionScreen = (props: NativeStackScreenProps<RootStackProps>) => {
   const theme = useTheme();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
@@ -25,9 +26,37 @@ const QuestionScreen = (props: NativeStackScreenProps<RootStackProps>) => {
   const handleSubmit = () => {
     if (onValidate()) {
       storeDialog.onOpen({
-        children: () => <Text>send your answer</Text>,
+        children: () => (
+          <View>
+            <Text>send your answerasdfdfasd</Text>
+            <View style={{
+              flexDirection: "row",
+              alignItems: "flex-end",
+              justifyContent: "flex-end",
+              alignContent: "flex-end",
+              gap: 5
+            }}>
+              <ButtonCustom
+                linear={false}
+                style={{
+                  backgroundColor: theme.colors.error,
+                  height: 45,
+                  width: 80,
+                }}
+                onPress={() => {
+                  storeDialog.onDismiss();
+                }} label={'Cancel'} />
+              <ButtonCustom
+                style={{
+                  height: 45,
+                  width: 80
+                }}
+                onPress={handleSend} label={"Submit"} />
+            </View>
+          </View>
+        ),
         title: "Confirm send answer.",
-        onPress: handleSend,
+        // onPress: handleSend,
       });
     } else {
       setShowSnackbar(true);

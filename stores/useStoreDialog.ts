@@ -8,7 +8,14 @@ interface StoreDialogProps {
     onDismiss: () => void;
     onCancel: (callback?: () => void) => void;
     onPress: (callback?: () => void) => void;
-    onOpen: (props: { title: string, onPress?: () => void, onCancel?: () => void, children?: () => React.ReactNode }) => void;
+    onOpen: (
+        props: {
+            title: string,
+            onPress?: () => void,
+            onCancel?: () => void,
+            children?: () => React.ReactNode;
+        }
+    ) => void;
 }
 const useStoreDialog = create<StoreDialogProps>(
     (set) => ({
@@ -24,7 +31,7 @@ const useStoreDialog = create<StoreDialogProps>(
             }
         },
         onPress: (callback?: () => void) => {
-            console.log("eiei")
+            console.log("eiei");
             set({ visible: false });
             if (callback) {
                 callback();

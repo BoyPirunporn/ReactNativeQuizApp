@@ -1,18 +1,18 @@
-import useStoreQuestion from '@/stores/useStoreQuestion'
+import Button from '@/apps/components/button';
+import useStoreSnackbar from '@/stores/storeSnackbar';
+import useStoreDialog from '@/stores/useStoreDialog';
+import useStoreQuestion from '@/stores/useStoreQuestion';
+import { AntDesign } from '@expo/vector-icons';
+import { CommonActions } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { RootStackProps } from '../MyStack';
+import React, { useEffect } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { MD3Theme, useTheme } from 'react-native-paper';
-import Button from '@/apps/components/button';
-import { AntDesign } from '@expo/vector-icons';
-import useStoreDialog from '@/stores/useStoreDialog';
-import { CommonActions } from '@react-navigation/native';
-import useStoreSnackbar from '@/stores/storeSnackbar';
+import { RootStackProps } from '../../MyStack';
 
 // import { X, Check } from 'lucide-react-native';
-const QuestionScreenTwo = (props: NativeStackScreenProps<RootStackProps>) => {
+const QuestionScreen = (props: NativeStackScreenProps<RootStackProps>) => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const {
@@ -40,7 +40,35 @@ const QuestionScreenTwo = (props: NativeStackScreenProps<RootStackProps>) => {
     const handleSubmit = () => {
         if (onValidate()) {
             storeDialog.onOpen({
-                children: () => <Text>send your answer</Text>,
+                children: () => (
+                    <View style={{flexDirection:"column",gap:20}}>
+                        <Text style={{fontSize:18}}>send your answer</Text>
+                        <View style={{
+                            flexDirection: "row",
+                            alignItems: "flex-end",
+                            justifyContent: "flex-end",
+                            alignContent: "flex-end",
+                            gap: 5
+                        }}>
+                            <Button
+                                linear={false}
+                                style={{
+                                    backgroundColor: theme.colors.error,
+                                    height: 45,
+                                    width: 80,
+                                }}
+                                onPress={() => {
+                                    storeDialog.onDismiss();
+                                }} label={'Cancel'} />
+                            <Button
+                                style={{
+                                    height: 45,
+                                    width: 80
+                                }}
+                                onPress={handleSend} label={"Submit"} />
+                        </View>
+                    </View>
+                ),
                 title: "Confirm send answer.",
                 onPress: handleSend,
             });
@@ -51,7 +79,7 @@ const QuestionScreenTwo = (props: NativeStackScreenProps<RootStackProps>) => {
                 duration: 2 * 1000,
             });
         }
-    }
+    };
     const handleSend = async () => {
         storeDialog.onDismiss();
         await compare();
@@ -84,7 +112,7 @@ const QuestionScreenTwo = (props: NativeStackScreenProps<RootStackProps>) => {
                                     }
                                 </View>
                             </TouchableOpacity>
-                        )
+                        );
                     }}
                     keyExtractor={(_, index) => String(index)}
                 />
@@ -107,8 +135,8 @@ const QuestionScreenTwo = (props: NativeStackScreenProps<RootStackProps>) => {
                 </View>
             </View>
         </View>
-    ) : <View></View>
-}
+    ) : <View></View>;
+};
 
 const useStyles = (theme: MD3Theme) => StyleSheet.create({
     container: {
@@ -146,4 +174,4 @@ const useStyles = (theme: MD3Theme) => StyleSheet.create({
         margin: 8,
     },
 });
-export default QuestionScreenTwo
+export default QuestionScreen;

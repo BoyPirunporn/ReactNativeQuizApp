@@ -3,12 +3,12 @@ import { create } from "zustand";
 
 const useStoreLoading = create<{
     loading: boolean;
-    setLoading: () => void;
+    setLoading: (loading: boolean) => void;
 }>()
     ((set, get) => {
         return ({
             loading: false,
-            setLoading: () => set({ loading: !get().loading })
+            setLoading: (loading: boolean) => set({ loading: loading })
         });
     });
 

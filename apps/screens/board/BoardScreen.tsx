@@ -39,13 +39,13 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
     <SafeAreaView>
       <View style={[styles.container]}>
         <View style={styles.topThree}>
-          {storeBoard.topTree ? (
+          {storeBoard.boards.length ? (
             <TopTreeRank boards={storeBoard.boards.slice(0, 3)} />
           ) : null}
         </View>
         <View style={styles.listBoard}>
-          {storeBoard.boards.length
-            ? (
+          {storeBoard.boards.length > 3
+            && (
               <FlatList
                 style={styles.flatListStyle}
                 data={storeBoard.boards.slice(3)}
@@ -58,17 +58,6 @@ const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
                   />
                 )}
                 keyExtractor={(item) => item.id.toString()} />
-            )
-            : (
-              <View style={{
-                alignSelf: "center"
-              }}>
-                <Text style={{
-                  fontSize: 30,
-                  fontWeight: "500",
-                  color: theme.colors.inversePrimary
-                }}>No board score!</Text>
-              </View>
             )}
         </View>
         <View style={styles.buttonContainer}>

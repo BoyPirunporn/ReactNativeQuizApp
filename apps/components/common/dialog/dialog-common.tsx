@@ -37,7 +37,7 @@ const DialogCommon: React.FC<DialogCommonProps> = ({
                 }}>
                     {children}
                 </Dialog.Content>
-                <Dialog.Actions>
+                {/* <Dialog.Actions>
                     <View style={{
                         flex: 1,
                         flexDirection: "row",
@@ -64,7 +64,7 @@ const DialogCommon: React.FC<DialogCommonProps> = ({
                             }}
                             onPress={onPress} label={"Submit"} />
                     </View>
-                </Dialog.Actions>
+                </Dialog.Actions> */}
             </Dialog>
         </Portal>
     )

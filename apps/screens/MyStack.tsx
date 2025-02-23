@@ -4,18 +4,20 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './home/HomeScreen';
 
+import useStoreAuth from '@/stores/useStoreAuth';
 import { type NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useEffect } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'react-native-paper';
-import BoardScreen from './board/BoardScreen';
-import ResultScreen from './result/ResultScreen';
-import QuestionScreenTwo from './questions/QuestionScreenTwo';
 import Login from './auth/LoginScreen';
 import Register from './auth/RegisterScreen';
-import { useEffect } from 'react';
-import useStoreAuth from '@/stores/useStoreAuth';
-import { View, Text, TouchableOpacity } from 'react-native';
+import BoardScreen from './board/BoardScreen';
+import ResultScreen from './result/ResultScreen';
 
+import useStoreDialog from '@/stores/useStoreDialog';
+import useStoreLoading from '@/stores/useStoreLoading';
 import IonicIcons from 'react-native-vector-icons/Ionicons';
+import QuestionScreen from './questions/QuizV2/QuestionScreen';
 export type RootStackProps = {
     Home: undefined,
     Question: undefined;
@@ -28,18 +30,60 @@ export type RootStackProps = {
 export type PropsNavieStack = NativeStackScreenProps<RootStackProps>;
 const Stack = createStackNavigator();
 
-
+const delay = (duration: number) => new Promise(resolve => setTimeout(resolve, duration));
 const AppNavigator = () => {
     const theme = useTheme();
     const { user, listenToAuthChanges, logout } = useStoreAuth();
+    const loading = useStoreLoading();
+    const dialog = useStoreDialog();
     useEffect(() => {
         listenToAuthChanges();
     }, []);
 
+    const handleLogout = async () => {
+        try {
+            dialog.onDismiss();
+            loading.setLoading(true);
+            await logout();
+            loading.setLoading(false);
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
+
 
     const headerRight = () => (
         <TouchableOpacity onPress={async () => {
-            await logout();
+            dialog.onOpen({
+                title: "LogOut",
+                children: () => (
+                    <View style={{
+                        flexDirection: "column",
+                        gap: 20
+                    }}>
+                        <Text>Are you sure you want to log out?</Text>
+                        <View style={{
+                            justifyContent: "flex-end",
+                            flexDirection: "row",
+                        }}>
+                            <TouchableOpacity
+                                style={{
+                                    height: 45,
+                                    width: 80,
+                                    backgroundColor: theme.colors.error,
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    borderRadius: 10,
+
+                                }}
+                                onPress={handleLogout}>
+                                <Text style={{ color: "#fff" }}>Ok</Text>
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                )
+            });
         }} style={{ marginRight: 10 }}>
             <IonicIcons name="log-out-outline" size={30} style={{
                 color: "white"
@@ -72,7 +116,7 @@ const AppNavigator = () => {
                 >
                     {user ? (
                         <Stack.Group >
-                            <Stack.Screen name='Question' component={QuestionScreenTwo} options={{
+                            <Stack.Screen name='Question' component={QuestionScreen} options={{
                                 title: 'Questions',
                             }} />
                             <Stack.Screen name='Board' component={BoardScreen} options={{

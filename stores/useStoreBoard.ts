@@ -40,17 +40,17 @@ const useStoreBoard = create<StoreBoard>()
             get().fetchBoard();
         },
         fetchBoard: async () => {
-            useStoreLoading.getState().setLoading();
+            useStoreLoading.getState().setLoading(true);
             try {
                 const boards = await storage.get<IBoard>("boards");
                 const mapBoard: IBoard[] = boards.docs.sort((a, b) => a.data().score - b.data().score).map(c => ({ ...c.data(), id: c.id }));
                 const ranks = rankAndRearrange(mapBoard);
-                set({ boards: ranks, topTree: ranks.slice(0, 3) });
+                set({ boards: ranks});
 
             } catch (error) {
                 console.log(error);
             } finally {
-                useStoreLoading.getState().setLoading();
+                useStoreLoading.getState().setLoading(false);
             }
         }
     }),
