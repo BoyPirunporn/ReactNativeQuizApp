@@ -1,0 +1,9 @@
+// import { registerRootComponent } from 'expo';
+// // import App from './App.tsx.old'; // หรือไฟล์ที่เป็น root component ของแอป
+
+// // if(Platform.OS === "android"){
+
+// // }else{
+// //     AppRegistry.registerComponent(expo.name, () => App);
+// // }
+// registerRootComponent(App);

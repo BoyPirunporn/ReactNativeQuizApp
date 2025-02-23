@@ -30,12 +30,18 @@
       "favicon": "./assets/favicon.png"
     },
     "experiments": {
-      "tsconfigPaths": true
+      "tsconfigPaths": true,
+      "typedRoutes": true
     },
     "extra": {
       "eas": {
         "projectId": "d4a76824-4b05-4cad-bbe2-a23668715a68"
       }
-    }
+    },
+    "plugins": [
+      "expo-router",
+      "expo-asset"
+    ],
+    "jsEngine": "jsc"
   }
 }
