@@ -1,6 +1,7 @@
 import useStoreDialog from '@/stores/useStoreDialog'
 import React from 'react'
 import DialogCommon from '../components/common/dialog/dialog-common';
+import DialogError from '../components/common/dialog/dialog-error';
 
 
 const DialogProvider = () => {
@@ -10,8 +11,22 @@ const DialogProvider = () => {
         onPress,
         onDismiss,
         title,
-        children
+        children,
+        error,
+        errorMessage
     } = useStoreDialog();
+
+    if (error) {
+        return (
+            <DialogError
+                visible={visible}
+                onPress={onPress}
+                onDismiss={onDismiss}
+                title={title}
+                message={errorMessage!}
+                />
+        )
+    }
     return (
         <DialogCommon
             visible={visible}

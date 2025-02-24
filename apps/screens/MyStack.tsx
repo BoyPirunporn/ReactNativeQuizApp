@@ -18,6 +18,7 @@ import useStoreDialog from '@/stores/useStoreDialog';
 import useStoreLoading from '@/stores/useStoreLoading';
 import IonicIcons from 'react-native-vector-icons/Ionicons';
 import QuestionScreen from './questions/QuizV2/QuestionScreen';
+import UseFirebaseHook from '@/hooks/useFirebaseHook';
 export type RootStackProps = {
     Home: undefined,
     Question: undefined;
@@ -33,7 +34,8 @@ const Stack = createStackNavigator();
 const delay = (duration: number) => new Promise(resolve => setTimeout(resolve, duration));
 const AppNavigator = () => {
     const theme = useTheme();
-    const { user, listenToAuthChanges, logout } = useStoreAuth();
+    const {listenToAuthChanges, signOut} = UseFirebaseHook();
+    const { user,   } = useStoreAuth();
     const loading = useStoreLoading();
     const dialog = useStoreDialog();
     useEffect(() => {
@@ -44,7 +46,7 @@ const AppNavigator = () => {
         try {
             dialog.onDismiss();
             loading.setLoading(true);
-            await logout();
+            await signOut();
             loading.setLoading(false);
         } catch (error) {
             console.error('Logout error:', error);

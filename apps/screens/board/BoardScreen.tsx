@@ -21,12 +21,9 @@ import ItemList from './components/ItemList';
 import TopTreeRank from './components/TopTreeRank';
 
 const BoardScreen = (props: NativeStackScreenProps<RootStackProps>) => {
-  const [error, setError] = useState<string | null>();
   const styles = useStyles();
-  const theme = useTheme();
   const { getPlayer } = useStoreAuth();
   const storeBoard = useStoreBoard();
-  const storeDialog = useStoreDialogBoard();
   const storeQuestion = useStoreQuestion();
 
   useEffect(() => {

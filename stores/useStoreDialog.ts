@@ -1,5 +1,12 @@
 import { create } from 'zustand';
 
+interface DialogProps {
+    title: string,
+    onPress?: () => void,
+    onCancel?: () => void,
+    children?: () => React.ReactNode;
+    errorMessage?: string;
+}
 interface StoreDialogProps {
     visible: boolean;
     title: string;
@@ -8,22 +15,19 @@ interface StoreDialogProps {
     onDismiss: () => void;
     onCancel: (callback?: () => void) => void;
     onPress: (callback?: () => void) => void;
-    onOpen: (
-        props: {
-            title: string,
-            onPress?: () => void,
-            onCancel?: () => void,
-            children?: () => React.ReactNode;
-        }
-    ) => void;
+    onOpen: (props: DialogProps) => void;
+    onError: (error: DialogProps) => void;
+    error: boolean;
+    errorMessage?: string;
 }
 const useStoreDialog = create<StoreDialogProps>(
     (set) => ({
         visible: false,
+        error: false,
         title: "",
         children: () => null,
         setTitle: (t: string) => set({ title: t }),
-        onDismiss: () => set({ visible: false }),
+        onDismiss: () => set({ visible: false, error: false, errorMessage: "", title: "" }),
         onCancel: (callback?: () => void) => {
             set({ visible: false });
             if (callback) {
@@ -31,7 +35,6 @@ const useStoreDialog = create<StoreDialogProps>(
             }
         },
         onPress: (callback?: () => void) => {
-            console.log("eiei");
             set({ visible: false });
             if (callback) {
                 callback();
@@ -43,6 +46,9 @@ const useStoreDialog = create<StoreDialogProps>(
             onPress,
             children
         }) => set({ visible: true, title, onCancel, onPress, children }),
+        onError({ title, onCancel, onPress, errorMessage }) {
+            set({ visible: true, error: true, title, onCancel, onPress, errorMessage })
+        }
     })
 );
 

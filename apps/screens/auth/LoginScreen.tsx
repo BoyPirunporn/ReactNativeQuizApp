@@ -10,6 +10,11 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Controller, useForm } from 'react-hook-form';
 import useStoreAuth from '@/stores/useStoreAuth';
+import useStoreDialog from '@/stores/useStoreDialog';
+import useStoreSnackbar from '@/stores/storeSnackbar';
+import UseFirebaseHook from '@/hooks/useFirebaseHook';
+import { FirebaseError } from 'firebase/app';
+import useStoreLoading from '@/stores/useStoreLoading';
 
 export const signUpSchema = z.object({
     email: z.string().email("Invalid email address"),
@@ -26,7 +31,10 @@ const LoginScreen = ({
 }: NativeStackScreenProps<RootStackProps>) => {
     const theme = useTheme();
     const makeStyle = styles(theme);
-    const { login } = useStoreAuth();
+    const { signIn } = UseFirebaseHook();
+    const dialog = useStoreDialog();
+    const loading = useStoreLoading();
+    const snackBar = useStoreSnackbar();
     const { control, handleSubmit, formState: { errors } } = useForm<SignUpSchema>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
@@ -36,11 +44,21 @@ const LoginScreen = ({
     });
 
     const onSubmit = async (data: SignUpSchema) => {
+        loading.setLoading(true)
         try {
-            await login(data.email, data.password);
+            await signIn(data.email, data.password);
             navigate("Board");
         } catch (error) {
-            console.log(error);
+            if (error instanceof FirebaseError) {
+                if(error.code === "auth/invalid-credential"){
+                    snackBar.showSnackbar({ message: "Email or password is incorrect", duration: 2 * 1000, visible: true });
+                }
+            } else {
+                snackBar.showSnackbar({ message: (error as Error).message, duration: 2 * 1000, visible: true });
+            }
+
+        } finally {
+            loading.setLoading(false)
         }
     };
     return (

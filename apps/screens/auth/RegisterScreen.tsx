@@ -8,6 +8,10 @@ import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useStoreAuth from '@/stores/useStoreAuth';
+import UseFirebaseHook from '@/hooks/useFirebaseHook';
+import useStoreLoading from '@/stores/useStoreLoading';
+import { FirebaseError } from 'firebase/app';
+import useStoreSnackbar from '@/stores/storeSnackbar';
 
 
 
@@ -35,7 +39,9 @@ const RegisterScreen = ({
 }: NativeStackScreenProps<RootStackProps>) => {
     const theme = useTheme();
     const makeStyle = styles(theme);
-    const { register } = useStoreAuth();
+    const { signUp } = UseFirebaseHook();
+    const { setLoading } = useStoreLoading();
+    const snackBar = useStoreSnackbar();
     const { control, handleSubmit, formState: { errors } } = useForm<SignUpSchema>({
         resolver: zodResolver(signUpSchema),
         defaultValues: {
@@ -46,10 +52,26 @@ const RegisterScreen = ({
     });
 
     const onSubmit = async (data: SignUpSchema) => {
+        setLoading(true)
         try {
-            await register(data.email, data.password, data.confirmPassword);
+            await signUp(data.email, data.password);
+            navigate("Board");
         } catch (error) {
-            console.log(error);
+            if (error instanceof FirebaseError) {
+                console.log(error.code)
+                console.log(error.message)
+                if (error.code === "auth/invalid-credential") {
+                    snackBar.showSnackbar({ message: "Email or password is incorrect", duration: 2 * 1000, visible: true });
+                }
+                if (error.code === "auth/email-already-in-use") {
+                    snackBar.showSnackbar({ message: "Email already exists", duration: 2 * 1000, visible: true });
+                }
+            } else {
+                snackBar.showSnackbar({ message: (error as Error).message, duration: 2 * 1000, visible: true });
+            }
+
+        } finally {
+            setLoading(false)
         }
     };
 

@@ -1,9 +1,7 @@
-import { auth, storageFirebase } from "@/config/firebaseConfig";
-import { FirebaseService } from "@/services/firebaseService";
+import { auth } from "@/config/firebaseConfig";
 import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from 'firebase/auth';
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-// import { zustandStorage } from "./StorageMMK";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useStoreLoading from "./useStoreLoading";
 
@@ -12,55 +10,47 @@ interface IAuth {
     // setPlayer: (playerName: string) => Promise<void>;
     loading: boolean;
     user: User | null;
-    setUser: (user: any) => void;
+    setUser: (user: User) => void;
     setLoading: (loading: boolean) => void;
     login: (email: string, password: string) => Promise<void>;
     register: (email: string, password: string, confirmPassword: string) => Promise<void>;
-    logout: () => Promise<void>;
+    signOut: () => Promise<void>;
     listenToAuthChanges: () => void;
-    getPlayer:() => string
+    getPlayer: () => string
 }
 
 const useStoreAuth = create<IAuth>()(
     persist(
         (set, get) => ({
-            // playerName: null,
-            // setPlayer: async (playerName: string) => {
-            //     const storage = new FirebaseService(storageFirebase);
-            //     const pId = await storage.save<{ playerName: string; }>({
-            //         name: "players"
-            //     }, {
-            //         playerName
-            //     });
-            //     set({ playerName: pId });
-            // },
             user: null,
             loading: false,
             setUser: (user) => set({ user }),
             setLoading: (loading: boolean) => set({ loading }),
             login: async (email: string, password: string) => {
+                useStoreLoading.getState().setLoading(true);
                 try {
                     const userCredential = await signInWithEmailAndPassword(auth, email, password);
                     set({ user: userCredential.user });
+
                 } catch (error) {
                     console.log(error);
+                } finally {
+                    useStoreLoading.getState().setLoading(false);
                 }
             },
-            getPlayer:() => get().user?.email?.split("@").at(0)!,
+            getPlayer: () => get().user?.email?.split("@").at(0)!,
             register: async (email: string, password: string, confirmPassword: string) => {
+                useStoreLoading.getState().setLoading(true);
                 try {
                     await createUserWithEmailAndPassword(auth, email, password);
                 } catch (error) {
                     console.log(error);
+                } finally {
+                    useStoreLoading.getState().setLoading(false);
                 }
             },
-            logout: async () => {
-                try {
-                    await signOut(auth);
-                    set({ user: null });
-                } catch (error) {
-                    console.log(error);
-                }
+            signOut: async () => {
+                set({ user: null });
             },
             listenToAuthChanges: () => {
                 onAuthStateChanged(auth,

@@ -17,7 +17,6 @@ export interface RankProps {
 export default function TopTreeRank({
     boards
 }: TopTreeRankProps) {
-    console.log(boards)
     const theme = useTheme();
     const styles = createStyle(theme);
     return (
