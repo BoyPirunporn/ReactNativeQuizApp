@@ -41,7 +41,7 @@ const SignInPage = () => {
         loading.setLoading(true)
         try {
             await signIn(data.email, data.password);
-            router.navigate("Board");
+            router.navigate("board");
         } catch (error) {
             if (error instanceof FirebaseError) {
                 if (error.code === "auth/invalid-credential") {
@@ -63,7 +63,7 @@ const SignInPage = () => {
             <SafeAreaView style={makeStyle.container}>
                 <Image
                     style={makeStyle.logo}
-                    source={require("../../assets/images/Questions-pana.png")}
+                    source={require("@/assets/images/Questions-pana.png")}
                 />
                 <ThemedText style={makeStyle.h1} type="title">Sign In</ThemedText>
 

@@ -1,50 +1,54 @@
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
-import { PaperProvider } from 'react-native-paper';
-import { theme } from '@/config/theme';
-import DialogProvider from '@/providers/dialogProvider';
-import LoadingProvider from '@/providers/loadingProvider';
-import SnackBarProvider from '@/providers/snackbarProvider';
-import useStoreAuth from '@/stores/useStoreAuth';
+import { useFonts } from "expo-font";
+import { Stack, Slot, Redirect, useNavigationContainerRef, router } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
+import { PaperProvider } from "react-native-paper";
+import { theme } from "@/config/theme";
+import DialogProvider from "@/providers/dialogProvider";
+import LoadingProvider from "@/providers/loadingProvider";
+import SnackBarProvider from "@/providers/snackbarProvider";
+import useStoreAuth from "@/stores/useStoreAuth";
+import useFirebaseHook from "@/hooks/useFirebaseHook";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
-
-export const unstable_settings = {
-  initiaRouteName:"(auth)"
-}
 export default function RootLayout() {
-  const [loaded] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-  });
+    const [loaded] = useFonts({
+        SpaceMono: require("@/assets/fonts/SpaceMono-Regular.ttf"),
+    });
+    const { listenToAuthChanges } = useFirebaseHook();
+    useEffect(() => {
+        listenToAuthChanges();
+    }, []);
 
-  const { user } = useStoreAuth();
+    useEffect(() => {
+        if (loaded) {
+            SplashScreen.hideAsync();
+        }
+    }, [loaded]);
 
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
+    if (!loaded) {
+        return null;
     }
-  }, [loaded]);
 
-  if (!loaded) {
-    return null;
-  }
 
-  return (
-    <PaperProvider theme={theme}>
-      <DialogProvider />
-      <LoadingProvider />
-      <SnackBarProvider />
-      <Stack >
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false, headerLeft: () => null, title: "" }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-    </PaperProvider>
-  );
+
+
+    return (
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <PaperProvider theme={theme}>
+                <Stack>
+                    <Stack.Screen name="index" options={{ headerShown: false }} />
+                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                    <Stack.Screen name="(screen)" options={{ headerShown: false }} />
+                    <Stack.Screen name="+not-found" />
+                </Stack>
+                <DialogProvider />
+                <LoadingProvider />
+                <SnackBarProvider />
+            </PaperProvider>
+        </GestureHandlerRootView>
+    );
 }

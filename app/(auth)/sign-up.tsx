@@ -82,7 +82,7 @@ const RegisterScreen = () => {
             >
                 <Image
                     style={makeStyle.logo}
-                    source={require("../../assets/images/Questions-pana.png")}
+                    source={require("@/assets/images/Questions-pana.png")}
                 />
                 <Text style={makeStyle.h1}>Sign Up</Text>
                 <View style={{ height: 20 }} />

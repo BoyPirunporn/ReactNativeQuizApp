@@ -4,23 +4,23 @@ import { ThemedView } from '@/components/ThemedView';
 import Button from '@/components/button';
 import useStoreAuth from '@/stores/useStoreAuth';
 import { useEffect } from 'react';
-import {  useRouter } from 'expo-router';
+import { Redirect, useRouter } from 'expo-router';
+import useFirebaseHook from '@/hooks/useFirebaseHook';
 
 export default function HomeScreen() {
     const router = useRouter();
+
+    const {  } = useFirebaseHook();
     const { user } = useStoreAuth();
-    useEffect(() => {
-        if (user) {
-            router.navigate("board");
-            // return props.navigation.navigate("Board");
-        }
-    }, []);
+
+    if(user) return <Redirect href={"/board"}/>
+
     return (
         <ThemedView style={styles.container}>
             <ThemedView style={styles.imageContainer}>
                 <Image
                     style={styles.image}
-                    source={require("../assets/images/Questions-pana.png")}
+                    source={require("@/assets/images/Questions-pana.png")}
                 />
             </ThemedView>
             <ThemedView style={styles.buttonContainer}>
