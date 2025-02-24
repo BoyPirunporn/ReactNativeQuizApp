@@ -16,13 +16,13 @@ A simple trivia game where players answer multiple-choice questions and keep tra
 ### 🛠️ Technologies Used
 
 - **Frontend:** 📱 React Native
-- **Database:** 🔥 Firebase Firestore
+- **Database:** 🔥 Firebase Firestore Firease/Auth
 
 ### 🔧 Installation
 
 1. Clone the repository:
    ```sh
-   git clone https://github.com/your-username/restaurant-finder.git  
+   git clone https://github.com/boypirunporn/ReactNativeQuizApp.git  
    ```
 2. Navigate to the project folder:
    ```sh
@@ -34,12 +34,12 @@ A simple trivia game where players answer multiple-choice questions and keep tra
    ```
 4. Start the development server:
    ```sh
-   npm run dev  
+   npx expo run:android
+   or
+   npx expo run:ios  
    ```
 
-### 📌 Contribution
 
-Feel free to contribute! Fork the repository, make your changes, and submit a pull request. 😊
 
 <!-- ### 📄 License
 
