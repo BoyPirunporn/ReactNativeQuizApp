@@ -4,7 +4,7 @@ import useStoreLoading from '@/stores/useStoreLoading';
 
 
 const LoadingProvider = () => {
-    return (<LoadingSpiner />
+  return (<LoadingSpiner />
   )
 }
 

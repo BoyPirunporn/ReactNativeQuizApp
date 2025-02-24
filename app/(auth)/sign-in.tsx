@@ -1,38 +1,32 @@
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import React from 'react';
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { MD3Theme, useTheme } from 'react-native-paper';
-import Button from '../../components/button';
-import { RootStackProps } from '../MyStack';
-
+import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet, Image, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import { ThemedText } from '@/components/ThemedText'
+import { MD3Theme, useTheme } from 'react-native-paper'
+import { Controller, useForm } from 'react-hook-form'
+import Button from '@/components/button'
+import { useRouter } from 'expo-router'
+import useFirebaseHook from '@/hooks/useFirebaseHook'
+import useStoreSnackbar from '@/stores/storeSnackbar'
+import useStoreDialog from '@/stores/useStoreDialog'
+import useStoreLoading from '@/stores/useStoreLoading'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { FirebaseError } from 'firebase/app'
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Controller, useForm } from 'react-hook-form';
-import useStoreAuth from '@/stores/useStoreAuth';
-import useStoreDialog from '@/stores/useStoreDialog';
-import useStoreSnackbar from '@/stores/storeSnackbar';
-import UseFirebaseHook from '@/hooks/useFirebaseHook';
-import { FirebaseError } from 'firebase/app';
-import useStoreLoading from '@/stores/useStoreLoading';
 
-export const signUpSchema = z.object({
+const signUpSchema = z.object({
     email: z.string().email("Invalid email address"),
     password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 type SignUpSchema = z.infer<typeof signUpSchema>;
 
-
-const LoginScreen = ({
-    navigation: {
-        navigate
-    },
-}: NativeStackScreenProps<RootStackProps>) => {
+const SignInPage = () => {
     const theme = useTheme();
     const makeStyle = styles(theme);
-    const { signIn } = UseFirebaseHook();
-    const dialog = useStoreDialog();
+    const router = useRouter();
+
+    const { signIn } = useFirebaseHook();
     const loading = useStoreLoading();
     const snackBar = useStoreSnackbar();
     const { control, handleSubmit, formState: { errors } } = useForm<SignUpSchema>({
@@ -47,10 +41,10 @@ const LoginScreen = ({
         loading.setLoading(true)
         try {
             await signIn(data.email, data.password);
-            navigate("Board");
+            router.navigate("Board");
         } catch (error) {
             if (error instanceof FirebaseError) {
-                if(error.code === "auth/invalid-credential"){
+                if (error.code === "auth/invalid-credential") {
                     snackBar.showSnackbar({ message: "Email or password is incorrect", duration: 2 * 1000, visible: true });
                 }
             } else {
@@ -61,20 +55,17 @@ const LoginScreen = ({
             loading.setLoading(false)
         }
     };
+
+
     return (
-        <ScrollView
-            style={makeStyle.scrollView}
-            contentContainerStyle={makeStyle.scrollContent}
-        >
-            <SafeAreaView
-                style={makeStyle.container}
-            >
+        <ScrollView style={makeStyle.scrollView}
+            contentContainerStyle={makeStyle.scrollContent}>
+            <SafeAreaView style={makeStyle.container}>
                 <Image
                     style={makeStyle.logo}
-                    source={require("../../../assets/images/Questions-pana.png")}
+                    source={require("../../assets/images/Questions-pana.png")}
                 />
-                <Text style={makeStyle.h1}>Sign In</Text>
-                <View style={{ height: 20 }} />
+                <ThemedText style={makeStyle.h1} type="title">Sign In</ThemedText>
 
                 <Controller
                     control={control}
@@ -129,15 +120,17 @@ const LoginScreen = ({
                     justifyContent: "center"
                 }}>
                     <Text style={{ marginRight: 10 }}> Dont' you have an account?</Text>
-                    <TouchableOpacity onPress={() => navigate("Register")}>
+                    <TouchableOpacity onPress={() => {
+                        router.navigate("sign-up");
+                    }}>
                         <Text style={{ color: theme.colors.primary, textDecorationLine: "underline" }}>Sign Up</Text>
                     </TouchableOpacity>
                 </View>
+
             </SafeAreaView>
         </ScrollView>
-    );
-};
-
+    )
+}
 const styles = (theme: MD3Theme) => StyleSheet.create({
     scrollView: { flex: 1, backgroundColor: "#fff", paddingHorizontal: 30 },
     scrollContent: {
@@ -194,5 +187,4 @@ const styles = (theme: MD3Theme) => StyleSheet.create({
     buttonText: {},
 
 });
-
-export default LoginScreen;
+export default SignInPage

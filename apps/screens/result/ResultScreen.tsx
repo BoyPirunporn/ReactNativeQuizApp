@@ -1,6 +1,6 @@
 import { StyleSheet, View, Image, Platform, StatusBar } from 'react-native';
 import React from 'react';
-import Button from '../../components/button';
+import Button from '../../../components/button';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackProps } from '../MyStack';
 import { List, useTheme } from 'react-native-paper';

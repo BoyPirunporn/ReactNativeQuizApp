@@ -1,4 +1,4 @@
-import Button from '@/apps/components/button';
+import Button from '@/components/button';
 import useStoreSnackbar from '@/stores/storeSnackbar';
 import useStoreDialog from '@/stores/useStoreDialog';
 import useStoreQuestion from '@/stores/useStoreQuestion';
@@ -41,8 +41,8 @@ const QuestionScreen = (props: NativeStackScreenProps<RootStackProps>) => {
         if (onValidate()) {
             storeDialog.onOpen({
                 children: () => (
-                    <View style={{flexDirection:"column",gap:20}}>
-                        <Text style={{fontSize:18}}>send your answer</Text>
+                    <View style={{ flexDirection: "column", gap: 20 }}>
+                        <Text style={{ fontSize: 18 }}>send your answer</Text>
                         <View style={{
                             flexDirection: "row",
                             alignItems: "flex-end",

@@ -1,42 +1,45 @@
-import React, { useEffect } from 'react';
-import { StyleSheet, View, Image } from 'react-native';
-import Button from '../../../components/button';
-import type { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackProps } from '../MyStack';
-import useStoreAuth from '@/stores/useStoreAuth';
+import { Image, StyleSheet } from 'react-native';
 
-const HomeScreen = (props: NativeStackScreenProps<RootStackProps>) => {
+import { ThemedView } from '@/components/ThemedView';
+import Button from '@/components/button';
+import useStoreAuth from '@/stores/useStoreAuth';
+import { useEffect } from 'react';
+import {  useRouter } from 'expo-router';
+
+export default function HomeScreen() {
+    const router = useRouter();
     const { user } = useStoreAuth();
     useEffect(() => {
-        if (user) return props.navigation.navigate("Board");
+        if (user) {
+            router.navigate("board");
+            // return props.navigation.navigate("Board");
+        }
     }, []);
     return (
-        <View style={useStyles.container}>
-            <View style={useStyles.imageContainer}>
+        <ThemedView style={styles.container}>
+            <ThemedView style={styles.imageContainer}>
                 <Image
-                    style={useStyles.image}
-                    source={require("../../../assets/images/Questions-pana.png")}
+                    style={styles.image}
+                    source={require("../assets/images/Questions-pana.png")}
                 />
-            </View>
-            <View style={useStyles.buttonContainer}>
+            </ThemedView>
+            <ThemedView style={styles.buttonContainer}>
                 <Button
                     label="Get Started"
                     style={{ alignSelf: "stretch" }}
                     onPress={() => {
                         if (!user) {
-                            return props.navigation.navigate("Login");
+                            return router.navigate("sign-in");
                         }
-                        props.navigation.navigate("Board");
+                        router.navigate("board");
                     }}
                 />
-            </View>
-        </View>
+            </ThemedView>
+        </ThemedView>
     );
-};
+}
 
-export default HomeScreen;
-
-const useStyles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',

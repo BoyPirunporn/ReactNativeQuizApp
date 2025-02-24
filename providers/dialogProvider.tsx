@@ -24,7 +24,7 @@ const DialogProvider = () => {
                 onDismiss={onDismiss}
                 title={title}
                 message={errorMessage!}
-                />
+            />
         )
     }
     return (

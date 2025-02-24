@@ -1,6 +1,6 @@
-import ButtonCustom from '@/apps/components/button';
-import FooterList from '@/apps/components/footer-list';
-import QuestionItem from '@/apps/components/question-item';
+import ButtonCustom from '@/components/button';
+import FooterList from '@/components/footer-list';
+import QuestionItem from '@/components/question-item';
 import useStoreDialog from '@/stores/useStoreDialog';
 import useStoreQuestion from '@/stores/useStoreQuestion';
 import { CommonActions } from '@react-navigation/native';

@@ -5,16 +5,16 @@ import {
   Text,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import Button from '@/apps/components/button';
+import Button from '@/components/button';
 import { TextInput, useTheme } from 'react-native-paper';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackProps } from '../MyStack';
 import useStoreBoard from '@/stores/useStoreBoard';
 import { FlatList } from 'react-native-gesture-handler';
-import DialogComponent from '@/apps/components/dialog';
+import DialogComponent from '@/components/dialog';
 import useStoreQuestion from '@/stores/useStoreQuestion';
 import useStoreDialogBoard from '@/stores/useStoreDialogBoard';
-import { theme } from '@/apps/config/theme';
+import { theme } from '@/config/theme';
 import useStoreLoading from '@/stores/useStoreLoading';
 import useStoreAuth from '@/stores/useStoreAuth';
 import ItemList from './components/ItemList';

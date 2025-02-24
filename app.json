@@ -1,15 +1,17 @@
 {
   "expo": {
     "name": "QuizApp",
-    "slug": "quzi-app",
+    "slug": "quiz-app",
     "version": "1.0.0",
+    "scheme": "QuizApp",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#76FD98"
+      "backgroundColor": "#76FD98",
+      "resizeMode": "cover",
+      "enableFullScreenImage_legacy": true
     },
     "assetBundlePatterns": [
       "**/*"
@@ -30,12 +32,23 @@
       "favicon": "./assets/favicon.png"
     },
     "experiments": {
-      "tsconfigPaths": true
+      "typedRoutes": true
     },
     "extra": {
       "eas": {
         "projectId": "d4a76824-4b05-4cad-bbe2-a23668715a68"
+      },
+      "firebase": {
+        "API_KEY": "AIzaSyD7J9Q1J9J9J9J9J9J9J9J9J9J9J9J9J9",
+        "AUTH_DOMAIN": "qanda-9cdcc.firebaseapp.com",
+        "PROJECT_ID": "qanda-9cdcc",
+        "STORAGE_BUCKET": "qanda-9cdcc.firebasestorage.app",
+        "MESSAGING_SENDER_ID": "313337670885",
+        "APP_ID": "1:313337670885:web:09db1e8c10dae9663f380c"
       }
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }

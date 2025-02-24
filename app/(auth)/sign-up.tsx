@@ -1,17 +1,16 @@
-import Button from '@/apps/components/button';
+import Button from '@/components/button';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { MD3Theme, useTheme } from 'react-native-paper';
-import { RootStackProps } from '../MyStack';
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import useStoreAuth from '@/stores/useStoreAuth';
 import UseFirebaseHook from '@/hooks/useFirebaseHook';
 import useStoreLoading from '@/stores/useStoreLoading';
 import { FirebaseError } from 'firebase/app';
 import useStoreSnackbar from '@/stores/storeSnackbar';
+import { useRouter } from 'expo-router';
 
 
 
@@ -32,11 +31,8 @@ export const signUpSchema = z.object({
 
 type SignUpSchema = z.infer<typeof signUpSchema>;
 
-const RegisterScreen = ({
-    navigation: {
-        navigate
-    }
-}: NativeStackScreenProps<RootStackProps>) => {
+const RegisterScreen = () => {
+    const router = useRouter()
     const theme = useTheme();
     const makeStyle = styles(theme);
     const { signUp } = UseFirebaseHook();
@@ -55,7 +51,7 @@ const RegisterScreen = ({
         setLoading(true)
         try {
             await signUp(data.email, data.password);
-            navigate("Board");
+            router.navigate("Board");
         } catch (error) {
             if (error instanceof FirebaseError) {
                 console.log(error.code)
@@ -86,7 +82,7 @@ const RegisterScreen = ({
             >
                 <Image
                     style={makeStyle.logo}
-                    source={require("../../../assets/images/Questions-pana.png")}
+                    source={require("../../assets/images/Questions-pana.png")}
                 />
                 <Text style={makeStyle.h1}>Sign Up</Text>
                 <View style={{ height: 20 }} />
@@ -162,7 +158,7 @@ const RegisterScreen = ({
                     justifyContent: "center"
                 }}>
                     <Text style={{ marginRight: 10 }}>Already have an account?</Text>
-                    <TouchableOpacity onPress={() => navigate("Login")}>
+                    <TouchableOpacity onPress={() => router.navigate("sign-in")}>
                         <Text style={{ color: theme.colors.primary, textDecorationLine: "underline" }}>Sign In</Text>
                     </TouchableOpacity>
                 </View>
