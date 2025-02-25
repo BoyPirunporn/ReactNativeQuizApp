@@ -3,17 +3,12 @@ import { Image, StyleSheet } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import Button from '@/components/button';
 import useStoreAuth from '@/stores/useStoreAuth';
-import { useEffect } from 'react';
-import { Redirect, useRouter } from 'expo-router';
-import useFirebaseHook from '@/hooks/useFirebaseHook';
+import {  useRouter } from 'expo-router';
 
 export default function HomeScreen() {
     const router = useRouter();
 
-    const {  } = useFirebaseHook();
     const { user } = useStoreAuth();
-
-    if(user) return <Redirect href={"/board"}/>
 
     return (
         <ThemedView style={styles.container}>
@@ -29,9 +24,9 @@ export default function HomeScreen() {
                     style={{ alignSelf: "stretch" }}
                     onPress={() => {
                         if (!user) {
-                            return router.navigate("sign-in");
+                            return router.push("/sign-in");
                         }
-                        router.navigate("board");
+                        router.push("/board");
                     }}
                 />
             </ThemedView>

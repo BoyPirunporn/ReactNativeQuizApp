@@ -13,7 +13,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
 import ItemList from '@/components/board/ItemList';
 import TopTreeRank from '@/components/board/TopTreeRank';
-import { useRouter } from 'expo-router';
+import { useNavigation, useRouter } from 'expo-router';
+import useStoreDialog from '@/stores/useStoreDialog';
+import RNPickerSelect from 'react-native-picker-select';
+import { Picker } from '@react-native-picker/picker';
+import RNPicker from 'react-native-picker-select';
 
 const BoardScreen = () => {
   const styles = useStyles();
@@ -21,12 +25,23 @@ const BoardScreen = () => {
   const { getPlayer } = useStoreAuth();
   const storeBoard = useStoreBoard();
   const storeQuestion = useStoreQuestion();
+  const dialog = useStoreDialog();
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      headerBackVisible: false,
+      // headerBackTitleVisible: false,
+      // headerTintColor: theme.colors.primary, // Back button color
+    })
+  }, [navigation])
 
   useEffect(() => {
     storeBoard.fetchBoard();
   }, [storeBoard.fetchBoard]);
 
-  
+
   return (
     <SafeAreaView>
       <View style={[styles.container]}>
@@ -35,7 +50,7 @@ const BoardScreen = () => {
             <TopTreeRank boards={storeBoard.boards.slice(0, 3)} />
           ) : null}
         </View>
-         <View style={styles.listBoard}>
+        <View style={styles.listBoard}>
           {storeBoard.boards.length > 3
             ? (
               <FlatList
@@ -43,7 +58,7 @@ const BoardScreen = () => {
                 data={storeBoard.boards.slice(3)}
                 renderItem={(d) => (
                   <ItemList
-                    rank={d.index + 1}
+                    rank={d.index + 3}
                     playerName={d.item.playerName}
                     score={d.item.score}
                     totalQuestion={storeQuestion.totalQuestion}
@@ -52,13 +67,28 @@ const BoardScreen = () => {
                 keyExtractor={(item) => item.id.toString()} />
             ) : null}
         </View>
-       <View style={styles.buttonContainer}>
+        <View style={styles.buttonContainer}>
           <Button
             label="Start Quiz"
             style={{ alignSelf: "stretch" }}
             onPress={() => {
-              storeQuestion.setPlayerName(getPlayer());
-              router.navigate("question-v2");
+              dialog.onOpen({
+                title: "Category",
+                children: () => (
+                  <View>
+                    <Picker
+                      selectedValue={() => {}}
+                      onValueChange={(itemValue) => {}}
+                    >
+                      {storeQuestion.categories.map((category) => (
+                        <Picker.Item key={category} label={category} value={category} />
+                      ))}
+                    </Picker>
+                  </View>
+                )
+              })
+              // storeQuestion.setPlayerName(getPlayer());
+              // router.navigate("question-v2");
             }}
           />
         </View>

@@ -1,5 +1,5 @@
 import { useFonts } from "expo-font";
-import { Stack, Slot, Redirect, useNavigationContainerRef, router } from "expo-router";
+import { Slot, Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { PaperProvider } from "react-native-paper";
@@ -7,7 +7,6 @@ import { theme } from "@/config/theme";
 import DialogProvider from "@/providers/dialogProvider";
 import LoadingProvider from "@/providers/loadingProvider";
 import SnackBarProvider from "@/providers/snackbarProvider";
-import useStoreAuth from "@/stores/useStoreAuth";
 import useFirebaseHook from "@/hooks/useFirebaseHook";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -23,6 +22,7 @@ export default function RootLayout() {
         listenToAuthChanges();
     }, []);
 
+
     useEffect(() => {
         if (loaded) {
             SplashScreen.hideAsync();
@@ -33,16 +33,16 @@ export default function RootLayout() {
         return null;
     }
 
-
-
-
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <PaperProvider theme={theme}>
-                <Stack>
-                    <Stack.Screen name="index" options={{ headerShown: false }} />
-                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                    <Stack.Screen name="(screen)" options={{ headerShown: false }} />
+                <Stack screenOptions={{
+                    headerShown: false,
+                    animation: "none"
+                }}>
+                    <Stack.Screen name="index" options={{  animation: "fade" }} />
+                    <Stack.Screen name="(auth)" options={{  animation: "fade_from_bottom" }} />
+                    <Stack.Screen name="(screen)" options={{ }} />
                     <Stack.Screen name="+not-found" />
                 </Stack>
                 <DialogProvider />

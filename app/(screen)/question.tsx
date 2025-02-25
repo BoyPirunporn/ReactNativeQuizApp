@@ -81,7 +81,8 @@ const QuestionScreen = () => {
       alignItems: "center",
       alignSelf: "stretch",
       backgroundColor: theme.colors.inversePrimary,
-      position: "relative"
+      position: "relative",
+      marginTop:40
     }}>
       <FlatList
         data={question}
@@ -102,26 +103,9 @@ const QuestionScreen = () => {
       >
         Please answer all questions.
       </Snackbar>
-
-      {/* <DialogComponent
-        visible={storeDialog.visible}
-        onDismiss={storeDialog.onClose}
-        onPress={handleSend}
-        onCancel={storeDialog.onClose}
-        title={"Confirm send answer."}
-      >
-        <Text>Send answer</Text>
-      </DialogComponent> */}
     </View>
   );
 };
 
 export default QuestionScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between"
-  },
-
-});

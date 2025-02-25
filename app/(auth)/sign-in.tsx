@@ -1,18 +1,28 @@
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { ScrollView, StyleSheet, Image, Text, View, TextInput, TouchableOpacity } from 'react-native'
+import {
+    ScrollView,
+    Text,
+    View,
+    TextInput,
+    TouchableOpacity
+} from 'react-native'
 import { ThemedText } from '@/components/ThemedText'
-import { MD3Theme, useTheme } from 'react-native-paper'
+import { useTheme } from 'react-native-paper'
 import { Controller, useForm } from 'react-hook-form'
 import Button from '@/components/button'
 import { useRouter } from 'expo-router'
 import useFirebaseHook from '@/hooks/useFirebaseHook'
 import useStoreSnackbar from '@/stores/storeSnackbar'
-import useStoreDialog from '@/stores/useStoreDialog'
 import useStoreLoading from '@/stores/useStoreLoading'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { FirebaseError } from 'firebase/app'
 import { z } from 'zod';
+import { styles } from './_layout'
+import Feather from '@expo/vector-icons/Feather';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+
+
 
 const signUpSchema = z.object({
     email: z.string().email("Invalid email address"),
@@ -25,6 +35,8 @@ const SignInPage = () => {
     const theme = useTheme();
     const makeStyle = styles(theme);
     const router = useRouter();
+
+    const [showPassword, setShowPassword] = React.useState(false);
 
     const { signIn } = useFirebaseHook();
     const loading = useStoreLoading();
@@ -61,10 +73,10 @@ const SignInPage = () => {
         <ScrollView style={makeStyle.scrollView}
             contentContainerStyle={makeStyle.scrollContent}>
             <SafeAreaView style={makeStyle.container}>
-                <Image
+                {/* <Image
                     style={makeStyle.logo}
-                    source={require("@/assets/images/Questions-pana.png")}
-                />
+                    source={require("@/assets/icon.png")}
+                /> */}
                 <ThemedText style={makeStyle.h1} type="title">Sign In</ThemedText>
 
                 <Controller
@@ -73,13 +85,15 @@ const SignInPage = () => {
                     rules={{ required: "Email is required" }}
                     render={({ field: { onChange, value, onBlur } }) => (
                         <View style={makeStyle.controller}>
-                            <View style={makeStyle.inputContainer}>
+                            <View style={[makeStyle.inputContainer, { borderColor: errors.email ? "red" : theme.colors.inversePrimary }]}>
+                                <Feather name="mail" size={16} color={errors.email ? "red" : theme.colors.inversePrimary} style={makeStyle.suffixIcon} />
                                 <TextInput
                                     placeholder='Email or username'
+                                    placeholderTextColor={errors.email ? "red" : theme.colors.outline}
                                     onChangeText={value => onChange(value)}
                                     value={value}
                                     onBlur={onBlur}
-                                    style={{ ...makeStyle.input, borderColor: errors.email ? "red" : theme.colors.inversePrimary }} />
+                                    style={[makeStyle.input]} />
                             </View>
                             {errors.email && <Text style={makeStyle.textError}>{errors.email.message}</Text>}
                         </View>
@@ -91,100 +105,50 @@ const SignInPage = () => {
                     rules={{ required: "Password" }}
                     render={({ field: { onChange, value, onBlur } }) => (
                         <View style={makeStyle.controller}>
-                            <View style={makeStyle.inputContainer}>
+                            <View style={[makeStyle.inputContainer, { borderColor: errors.password ? "red" : theme.colors.inversePrimary }]}>
+                                <Feather name={showPassword ? "unlock" : "lock"} size={16} color={errors.password ? "red" : theme.colors.inversePrimary} style={makeStyle.suffixIcon} />
                                 <TextInput
                                     placeholder='Password'
+                                    placeholderTextColor={errors.password ? "red" : theme.colors.outline}
                                     onChangeText={value => onChange(value)}
                                     value={value}
                                     onBlur={onBlur}
-                                    secureTextEntry
-                                    style={{ ...makeStyle.input, borderColor: errors.password ? "red" : theme.colors.inversePrimary }} />
+                                    secureTextEntry={!showPassword}
+                                    style={[makeStyle.input]} />
+                                <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+                                    <Feather name={showPassword ? "eye-off" : "eye"} size={16} color={theme.colors.inversePrimary} style={makeStyle.suffixIcon} />
+                                </TouchableOpacity>
                             </View>
                             {errors.password && <Text style={makeStyle.textError}>{errors.password.message}</Text>}
                         </View>
                     )}
                 />
+                <View style={makeStyle.textBottom}>
+                    <Text style={{ marginRight: 10 }}> Dont' you have an account?</Text>
+                    <TouchableOpacity onPress={() => {
+                        router.navigate("sign-up");
+                    }}>
+                        <Text style={{ color: theme.colors.primary, textDecorationLine: "underline", }}>Sign Up</Text>
+                    </TouchableOpacity>
+                </View>
 
-                <TouchableOpacity onPress={() => { console.log("FORGET PASSWORD"); }} style={{ marginBottom: 20 }}>
-                    <Text style={{ textDecorationLine: "underline" }}>Forgot Password?</Text>
-                </TouchableOpacity>
                 <Button
                     label="Sign In"
                     style={makeStyle.button}
                     onPress={handleSubmit(onSubmit)}
                     disabled={false}
                 />
-                <View style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center"
-                }}>
-                    <Text style={{ marginRight: 10 }}> Dont' you have an account?</Text>
-                    <TouchableOpacity onPress={() => {
-                        router.navigate("sign-up");
-                    }}>
-                        <Text style={{ color: theme.colors.primary, textDecorationLine: "underline" }}>Sign Up</Text>
+
+                <Text style={{color:theme.colors.outline}}>OR</Text>
+                <View style={makeStyle.otherAuthContainer}>
+                    <TouchableOpacity style={makeStyle.gmailContainer}>
+                        <FontAwesome name="google" size={24} color="#dd4b39" />
+                        <Text style={{color:theme.colors.outline, fontWeight:"bold"}}>Login with Google</Text>
                     </TouchableOpacity>
                 </View>
-
             </SafeAreaView>
         </ScrollView>
     )
 }
-const styles = (theme: MD3Theme) => StyleSheet.create({
-    scrollView: { flex: 1, backgroundColor: "#fff", paddingHorizontal: 30 },
-    scrollContent: {
-        flexGrow: 1
-    },
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    logo: {
-        height: 200,
-        width: 200,
-        resizeMode: 'contain',
-        marginBottom: 20,
-    },
-    h1: {
-        fontSize: 32,
-        marginBottom: 40,
-        fontWeight: 'bold',
-        color: theme.colors.inversePrimary
-    },
-    controller: {
-        flexDirection: "column",
-        gap: 1,
-        marginBottom: 10,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        width: '100%',
-        height: 50,
-        borderRadius: 8,
-    },
-    textError: { marginVertical: 10, color: "red" },
-    input: {
-        borderWidth: 1,
-        borderColor: theme.colors.inversePrimary,
-        height: "100%",
-        flex: 1,
-        padding: 10,
-        borderRadius: 10
-    },
-    button: {
-        width: '100%',
-        height: 50,
-        borderRadius: 8,
-        paddingHorizontal: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom: 20,
-        fontSize: 18
-    },
-    buttonText: {},
 
-});
 export default SignInPage

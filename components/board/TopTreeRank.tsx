@@ -22,9 +22,9 @@ export default function TopTreeRank({
     return (
         <View style={styles.container}>
             {/* Two */}
-            <RankTwo playerName={boards[1] ? boards[1].playerName : ""} score={boards[1] ? boards[1].score : 0} />
+            <RankTwo playerName={boards[0] ? boards[0].playerName : ""} score={boards[0] ? boards[0].score : 0} />
             {/* One */}
-            <RankOne playerName={boards[0] ? boards[0].playerName : ""} score={boards[0] ? boards[0].score : 0} />
+            <RankOne playerName={boards[1] ? boards[1].playerName : ""} score={boards[1] ? boards[1].score : 0} />
             {/* Tree */}
             <RankThree playerName={boards[2] ? boards[2].playerName : ""} score={boards[2] ? boards[2].score : 0} />
         </View>
