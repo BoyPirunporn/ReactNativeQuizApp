@@ -4,13 +4,13 @@ interface DialogProps {
     title: string,
     onPress?: () => void,
     onCancel?: () => void,
-    children?: () => React.ReactNode;
+    children?: React.ReactNode;
     errorMessage?: string;
 }
 interface StoreDialogProps {
     visible: boolean;
     title: string;
-    children: () => React.ReactNode;
+    children: React.ReactNode;
     setTitle: (t: string) => void;
     onDismiss: () => void;
     onCancel: (callback?: () => void) => void;
@@ -25,7 +25,7 @@ const useStoreDialog = create<StoreDialogProps>(
         visible: false,
         error: false,
         title: "",
-        children: () => null,
+        children: null,
         setTitle: (t: string) => set({ title: t }),
         onDismiss: () => set({ visible: false, error: false, errorMessage: "", title: "" }),
         onCancel: (callback?: () => void) => {

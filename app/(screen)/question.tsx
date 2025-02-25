@@ -5,15 +5,18 @@ import useStoreDialog from '@/stores/useStoreDialog';
 import useStoreQuestion from '@/stores/useStoreQuestion';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState, } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar, StyleSheet, Text, View } from 'react-native';
 import { FlatList, RefreshControl } from 'react-native-gesture-handler';
 import { Snackbar, useTheme } from 'react-native-paper';
+import { SafeAreaProvider, SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const QuestionScreen = () => {
-    const router = useRouter();
+  const router = useRouter();
   const theme = useTheme();
   const [showSnackbar, setShowSnackbar] = useState<boolean>(false);
   const storeDialog = useStoreDialog();
+  const insets = useSafeAreaInsets();
+
   const {
     loading,
     question,
@@ -26,7 +29,7 @@ const QuestionScreen = () => {
   const handleSubmit = () => {
     if (onValidate()) {
       storeDialog.onOpen({
-        children: () => (
+        children: (
           <View>
             <Text>send your answerasdfdfasd</Text>
             <View style={{
@@ -66,44 +69,49 @@ const QuestionScreen = () => {
     }
   };
   const handleSend = async () => {
+
     storeDialog.onDismiss();
     await compare();
     clearQuestionState();
-    router.navigate("result")
+    router.navigate("result");
   };
   useEffect(() => {
     setQuestion();
   }, []);
   return (
-    <View style={{
-      flex: 1,
-      height: "100%",
-      alignItems: "center",
-      alignSelf: "stretch",
-      backgroundColor: theme.colors.inversePrimary,
-      position: "relative",
-      marginTop:40
-    }}>
-      <FlatList
-        data={question}
-        initialNumToRender={5}
-        renderItem={({ item, index }) => (<QuestionItem key={index} item={item} />)}
-        refreshControl={<RefreshControl refreshing={loading} onRefresh={setQuestion} />}
-        keyExtractor={(_, index) => String(index)}
-        ListFooterComponent={<FooterList hidden={loading} onPress={handleSubmit} />}
-      />
-      <Snackbar
-        visible={showSnackbar}
-        duration={2 * 1000}
-        style={{
-          backgroundColor: theme.colors.error,
-        }}
-        icon="close"
-        onDismiss={() => setShowSnackbar(false)}
-      >
-        Please answer all questions.
-      </Snackbar>
-    </View>
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+      <SafeAreaView style={{
+        flex: 1,
+        paddingTop: insets.top,
+        height: "100%",
+        alignItems: "center",
+        alignSelf: "stretch",
+        backgroundColor: theme.colors.inversePrimary,
+        position: "relative",
+        marginTop: 40
+      }}>
+        <FlatList
+          data={question}
+          initialNumToRender={5}
+          renderItem={({ item, index }) => (<QuestionItem key={index} item={item} />)}
+          refreshControl={<RefreshControl refreshing={loading} onRefresh={setQuestion} />}
+          keyExtractor={(_, index) => String(index)}
+          ListFooterComponent={<FooterList hidden={loading} onPress={handleSubmit} />}
+        />
+        <Snackbar
+          visible={showSnackbar}
+          duration={2 * 1000}
+          style={{
+            backgroundColor: theme.colors.error,
+          }}
+          icon="close"
+          onDismiss={() => setShowSnackbar(false)}
+        >
+          Please answer all questions.
+        </Snackbar>
+      </SafeAreaView>
+    </>
   );
 };
 

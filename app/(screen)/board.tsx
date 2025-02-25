@@ -1,31 +1,26 @@
 import Button from '@/components/button';
-import useStoreAuth from '@/stores/useStoreAuth';
 import useStoreBoard from '@/stores/useStoreBoard';
-import useStoreLoading from '@/stores/useStoreLoading';
 import useStoreQuestion from '@/stores/useStoreQuestion';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
-  Text
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { FlatList, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import ItemList from '@/components/board/ItemList';
 import TopTreeRank from '@/components/board/TopTreeRank';
 import { useNavigation, useRouter } from 'expo-router';
-import useStoreDialog from '@/stores/useStoreDialog';
-import RNPickerSelect from 'react-native-picker-select';
-import { Picker } from '@react-native-picker/picker';
-import RNPicker from 'react-native-picker-select';
+import CategoryPickerModal from '@/components/CategoryPickerModal';
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const BoardScreen = () => {
-  const styles = useStyles();
   const router = useRouter();
-  const { getPlayer } = useStoreAuth();
+  const styles = useStyles();
   const storeBoard = useStoreBoard();
   const storeQuestion = useStoreQuestion();
-  const dialog = useStoreDialog();
+
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const navigation = useNavigation();
 
@@ -34,15 +29,19 @@ const BoardScreen = () => {
       headerBackVisible: false,
       // headerBackTitleVisible: false,
       // headerTintColor: theme.colors.primary, // Back button color
-    })
-  }, [navigation])
+    });
+  }, [navigation]);
 
   useEffect(() => {
     storeBoard.fetchBoard();
   }, [storeBoard.fetchBoard]);
 
+  useEffect(() => {
+    console.log("Categories Updated:", storeQuestion.category);
+  }, [storeQuestion.category]);
 
   return (
+    
     <SafeAreaView>
       <View style={[styles.container]}>
         <View style={styles.topThree}>
@@ -71,28 +70,14 @@ const BoardScreen = () => {
           <Button
             label="Start Quiz"
             style={{ alignSelf: "stretch" }}
-            onPress={() => {
-              dialog.onOpen({
-                title: "Category",
-                children: () => (
-                  <View>
-                    <Picker
-                      selectedValue={() => {}}
-                      onValueChange={(itemValue) => {}}
-                    >
-                      {storeQuestion.categories.map((category) => (
-                        <Picker.Item key={category} label={category} value={category} />
-                      ))}
-                    </Picker>
-                  </View>
-                )
-              })
-              // storeQuestion.setPlayerName(getPlayer());
-              // router.navigate("question-v2");
-            }}
+            onPress={() => setModalOpen(true)}
           />
         </View>
       </View>
+      <CategoryPickerModal visible={isModalOpen} onClose={() => {
+        setModalOpen(false);
+        router.push("/question-v2")
+      }} />
     </SafeAreaView >
   );
 
@@ -103,10 +88,12 @@ const BoardScreen = () => {
 
 export default BoardScreen;
 
+
+
 const useStyles = () => StyleSheet.create({
   container: {
     alignItems: "center",
-    // alignSelf: "stretch",
+    alignSelf: "stretch",
     height: "100%",
   },
   listBoard: {
@@ -117,7 +104,7 @@ const useStyles = () => StyleSheet.create({
     paddingHorizontal: 10,
   },
   topThree: {
-    flex: 2.5,
+    flex: 3,
   },
   image: {
     width: "100%",

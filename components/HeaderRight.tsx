@@ -1,6 +1,6 @@
-import { View, Text, TouchableOpacity } from 'react-native'
-import React from 'react'
-import useStoreDialog from '@/stores/useStoreDialog'
+import { View, Text, TouchableOpacity } from 'react-native';
+import React from 'react';
+import useStoreDialog from '@/stores/useStoreDialog';
 import { theme } from '@/config/theme';
 import IonicIcon from '@expo/vector-icons/Ionicons';
 const HeaderRight = () => {
@@ -8,12 +8,12 @@ const HeaderRight = () => {
 
     const handleSignOut = async () => {
 
-    }
+    };
     return (
         <TouchableOpacity onPress={async () => {
             dialog.onOpen({
                 title: "LogOut",
-                children: () => (
+                children: (
                     <View style={{
                         flexDirection: "column",
                         gap: 20
@@ -45,7 +45,7 @@ const HeaderRight = () => {
                 color: "white"
             }} />
         </TouchableOpacity>
-    )
-}
+    );
+};
 
-export default HeaderRight
+export default HeaderRight;

@@ -22,41 +22,52 @@ interface StoreQuestion {
     nextQuestion: () => void;
     prveQuestion: () => void;
     flag: "VIEW" | "INIT",
-    categories: string[]
+    categories: {
+        id: number;
+        label: string;
+    }[],
+    category: {
+        id: number,
+        label: string;
+    };
+    setCategory: (c: {
+        id: number,
+        label: string;
+    }) => void;
 
 }
 
 const CATEGORIES = [
-    "General Knowledge",
-    "Entertainment: Books",
-    "Entertainment: Film",
-    "Entertainment: Music",
-    "Entertainment: Musicals & Theatres",
-    "Entertainment: Television",
-    "Entertainment: Video Games",
-    "Entertainment: Board Games",
-    "Science & Nature",
-    "Science: Computers",
-    "Science: Mathematics",
-    "Mythology",
-    "Sports",
-    "Geography",
-    "History",
-    "Politics",
-    "Art",
-    "Celebrities",
-    "Animals",
-    "Vehicles",
-    "Entertainment: Comics",
-    "Science: Gadgets",
-    "Entertainment: Japanese Anime & Manga",
-    "Entertainment: Cartoon & Animations",
-]
+    { id: 10, label: "Entertainment: Books" },
+    { id: 11, label: "Entertainment: Film" },
+    { id: 12, label: "Entertainment: Music" },
+    { id: 13, label: "Entertainment: Musicals & Theatres" },
+    { id: 144, label: "Entertainment: Television" },
+    { id: 15, label: "Entertainment: Video Games" },
+    { id: 16, label: "Entertainment: Board Games" },
+    { id: 17, label: "Science & Nature" },
+    { id: 18, label: "Science: Computers" },
+    { id: 19, label: "Science: Mathematics" },
+    { id: 20, label: "Mythology" },
+    { id: 21, label: "Sports" },
+    { id: 22, label: "Geography" },
+    { id: 23, label: "History" },
+    { id: 24, label: "Politics" },
+    { id: 25, label: "Art" },
+    { id: 26, label: "Celebrities" },
+    { id: 27, label: "Animals" },
+    { id: 28, label: "Vehicles" },
+    { id: 29, label: "Entertainment: Comics" },
+    { id: 30, label: "Science: Gadgets" },
+    { id: 31, label: "Entertainment: Japanese Anime & Manga" },
+    { id: 32, label: "Entertainment: Cartoon & Animations" },
+];
 
 const useStoreQuestion = create<StoreQuestion>()(
     (set, get) => {
         return ({
             categories: CATEGORIES,
+            category: CATEGORIES[0],
             question: [],
             asnwers: [],
             loading: false,
@@ -64,12 +75,16 @@ const useStoreQuestion = create<StoreQuestion>()(
             playerName: "",
             currentQuestion: 0,
             flag: "INIT",
+            setCategory: (category: {
+                id: number,
+                label: string;
+            }) => set({ category }),
             nextQuestion: () => {
                 if (get().currentQuestion === get().question.length - 1) {
                     return;
                 }
                 let current = get().currentQuestion;
-                current++
+                current++;
                 return set({ currentQuestion: current });
             },
             prveQuestion: () => {
@@ -99,7 +114,7 @@ const useStoreQuestion = create<StoreQuestion>()(
                     asnwers: []
                 });
                 await delay(2 * 1000);
-                const response = await fetch(`https://opentdb.com/api.php?amount=${get().totalQuestion}&type=multiple`, {
+                const response = await fetch(`https://opentdb.com/api.php?amount=${get().totalQuestion}&type=multiple&category=${get().category}`, {
                     method: "GET"
                 });
 
@@ -111,7 +126,7 @@ const useStoreQuestion = create<StoreQuestion>()(
                     question: e.question,
                     correctAnswer: e.correct_answer,
                     chooses: e.incorrect_answers
-                }))
+                }));
                 set({ question: randomQuestion(get().totalQuestion, questions) });
                 useStoreLoading.getState().setLoading(false);
                 return Promise.resolve();
@@ -194,10 +209,6 @@ const randomQuestion = (count: number, questions: IQuestion[]): IQuistionExtend[
     //     [tmp[i], tmp[j]] = [tmp[j], tmp[i]];
     // }
 
-
-    questions.forEach((q: IQuestion) => {
-        console.log(q.correctAnswer)
-    })
     const mapQuestionField = questions.map((q: IQuestion, index) => {
         const chooses = getRandomChoices(q);
         return {

@@ -9,6 +9,8 @@ import LoadingProvider from "@/providers/loadingProvider";
 import SnackBarProvider from "@/providers/snackbarProvider";
 import useFirebaseHook from "@/hooks/useFirebaseHook";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { StatusBar } from 'expo-status-bar';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -40,11 +42,12 @@ export default function RootLayout() {
                     headerShown: false,
                     animation: "none"
                 }}>
-                    <Stack.Screen name="index" options={{  animation: "fade" }} />
-                    <Stack.Screen name="(auth)" options={{  animation: "fade_from_bottom" }} />
-                    <Stack.Screen name="(screen)" options={{ }} />
+                    <Stack.Screen name="index" options={{ animation: "fade" }} />
+                    <Stack.Screen name="(auth)" options={{ animation: "fade_from_bottom" }} />
+                    <Stack.Screen name="(screen)" options={{}} />
                     <Stack.Screen name="+not-found" />
                 </Stack>
+                <StatusBar style="auto" />
                 <DialogProvider />
                 <LoadingProvider />
                 <SnackBarProvider />

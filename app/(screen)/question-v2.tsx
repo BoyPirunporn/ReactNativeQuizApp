@@ -10,6 +10,7 @@ import React, { useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { MD3Theme, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 // import { X, Check } from 'lucide-react-native';
 const QuestionScreenV2 = () => {
@@ -41,7 +42,7 @@ const QuestionScreenV2 = () => {
     const handleSubmit = () => {
         if (onValidate()) {
             storeDialog.onOpen({
-                children: () => (
+                children: (
                     <View style={{ flexDirection: "column", gap: 20 }}>
                         <Text style={{ fontSize: 18 }}>send your answer</Text>
                         <View style={{
@@ -88,7 +89,7 @@ const QuestionScreenV2 = () => {
         router.navigate("result")
     };
     return question.length ? (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <View >
                 <Text style={styles.title}>{currentQuestion + 1}. {question[currentQuestion].question}</Text>
             </View>
@@ -131,7 +132,7 @@ const QuestionScreenV2 = () => {
                     />
                 </View>
             </View>
-        </View>
+        </SafeAreaView>
     ) : <View></View>;
 };
 
