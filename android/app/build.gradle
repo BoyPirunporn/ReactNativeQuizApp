@@ -103,9 +103,9 @@ android {
 
         release {
             storeFile file('quiz-app-key.keystore')
-            storePassword 'prpasn@'
-            keyAlias 'quiz-app-alias'
-            keyPassword 'prpasn@'
+            storePassword System.getenv('KEYSTORE_PASSWORD')
+            keyAlias System.getenv('KEYSTORE_ALIAS')
+            keyPassword System.getenv('KEYSTORE_PASSWORD')
         }
     }
     buildTypes {
