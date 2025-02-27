@@ -76,4 +76,5 @@ google-services.json
 GoogleService-Info.plist
 config/firebaseConfig.ts
 expo-env.d.ts
+*.keystore
 # @end expo-cli
