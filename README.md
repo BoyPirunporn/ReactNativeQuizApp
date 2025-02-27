@@ -3,15 +3,25 @@
 A simple trivia game where players answer multiple-choice questions and keep track of their scores on the scoreboard.
 
 ## 🚀 Features
-
+- 🔒 **Authentication**: User authentication with `Firebase/Auth`.
+- 🔥 **Firebase Integration**: Utilizing `Firebase/Firestore` for data storage and `Firebase/Auth` for authentication.
 - ❓ **Multiple Choice Questions**: Players answer questions with 4 choices.
-- 🏆 **Scoreboard**: Displays the score of each player during the game.
-- 👤 **Player Name**: Players input their name before starting the game to personalize the experience.
+- 🏆 **Scoreboard**: Displays the scores of each player during the game.
+- 👤 **Player Name**: Players enter their name before starting the game to personalize the experience.
+
 
 
 ### 📸 Preview
 
-
+<div style='display:"flex";flex-direction:"row";flex-wrap:"wrap" gap:"2rem"'>
+   <img src="src/assets/screen-shot/1.png" width="200" height="auto" />
+   <img src="src/assets/screen-shot/2.png" width="200" height="auto" />
+   <img src="src/assets/screen-shot/3.png" width="200" height="auto" />
+   <img src="src/assets/screen-shot/4.png" width="200" height="auto" />
+   <img src="src/assets/screen-shot/5.png" width="200" height="auto" />
+   <img src="src/assets/screen-shot/6.png" width="200" height="auto" />
+   <img src="src/assets/screen-shot/7.png" width="200" height="auto" />
+</div>
 
 ### 🛠️ Technologies Used
 
