@@ -9,7 +9,8 @@ A simple trivia game where players answer multiple-choice questions and keep tra
 - 🏆 **Scoreboard**: Displays the scores of each player during the game.
 - 👤 **Player Name**: Players enter their name before starting the game to personalize the experience.
 
-
+### Download APK
+You can download the APK from [Google Drive](https://drive.google.com/file/d/1lFgJNMfYc4YuvWp0gAIcza6t_sgMQjCY/view?usp=drive_link).
 
 ### 📸 Preview
 
@@ -22,6 +23,7 @@ A simple trivia game where players answer multiple-choice questions and keep tra
    <img src="src/assets/screen-shot/6.png" width="200" height="auto" />
    <img src="src/assets/screen-shot/7.png" width="200" height="auto" />
 </div>
+
 
 ### 🛠️ Technologies Used
 
