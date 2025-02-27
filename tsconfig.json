@@ -9,7 +9,7 @@
         "./node_modules/@firebase/auth/dist/index.rn.d.ts"
       ],
       "@/*": [
-        "./*"
+        "./src/*"
       ],
       "tailwind.config": [
         "./tailwind.config.js"
